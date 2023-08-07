@@ -1,51 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parcel Logger</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite App</title>
   </head>
   <body>
-    <div id="app">
-        <h2>Sender</h2>
-        <hr>
-      <div>
-        <!-- <label for="riderName">Rider's Name</label> -->
-        <input type="text" id="riderName" v-model="riderName" placeholder="Rider's Name"/>
-      </div>
-      <div>
-        <!-- <label for="riderCourier">Courier</label> -->
-        <input type="text" id="riderCourier" v-model="courier" placeholder="Courier"/>
-      </div>
-
-      <h2>Recipient</h2>
-      <div>
-        <!-- <label for="recipientName">Name</label> -->
-        <input type="text" id="recipientName" v-model="enteredName" placeholder="Recipient Name"/>
-      </div>
-      <div>
-        <!-- <label for="unitNumber">Unit Number</label> -->
-        <input type="text" id="unitNumber" v-model="enteredUnitNum" placeholder="Unit Number"/>
-      </div>
-      <div>
-        <!-- <label for="descItem">Description of items</label> -->
-        <input type="text" id="descItem" v-model="enteredDescItem" placeholder="Description of items"/>
-      </div>
-      <div>
-        <!-- <label for="contactNum">Contact Number</label> -->
-        <input type="text" id="contactNum" v-model="enteredContactNum" placeholder="Contact Number"/>
-        <button id="btnAdd" @click="addGoal">Add Parcel</button>
-        <button id="btnClear" @click="clearFields">Clear All</button>
-      </div>
-      <ul>
-        <li id="name" v-for="goal in goals">{{ goal }}</li>
-      </ul>
-      <div>
-        <button id="btnDone" @click="submit">Done</button>
-      </div>
-    </div>
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="app.js"></script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
