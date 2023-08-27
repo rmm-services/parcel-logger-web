@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import QrView from '../views/QrView.vue'
+import Modal from '../components/ModalView.vue'
 
 export default {
     data() {
@@ -18,13 +19,19 @@ export default {
             currentTime: new Date(),
             dataResponse: [],
             qr_data: '',
-            qr_id: ''
+            qr_id: '',
+            isModalVisible: false,
+            propsParcelId: '',
+            propsParcelOwnerName: '',
+            propsParcelUnitNumber: '',
+            propsParcelItemDescription: '',
+            propsParcelMobileNumber: ''
         };
     },
     methods: {
         addGoal() {
             const newitem = {
-                parcel_id: this.enteredUnitNumber + this.enteredRecipientName.replace(/\s/g, "").toLocaleUpperCase() + this.formattedDateTime + this.enteredFirstName.charAt(0).toLocaleUpperCase() + this.enteredLastName.toLocaleUpperCase(),
+                parcel_id: this.enteredUnitNumber + this.formattedDateTime,
                 riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
                 riders_courier_type: this.enteredCourier,
                 recipients_description_of_items: this.enteredDescItem,
@@ -81,15 +88,42 @@ export default {
                 .catch(error => {
                 console.error('Error:', error);
             });
-        }
+        },
+        deleteParcels(id) {
+          const updateParcelList = this.goals.filter((el) => el.parcel_id !== id);
+          this.goals = updateParcelList;
+
+          if (this.goals.length === 0) {
+                this.isHidden = false;
+            }
+            else {
+                this.isHidden = true;
+            }
+    },
+    selectedParcels(id) {
+          const selectedParcelsDetails = this.goals.find((el) => el.parcel_id === id);
+          this.propsParcelId = selectedParcelsDetails.parcel_id;
+          this.propsParcelOwnerName = selectedParcelsDetails.recipients_name;
+          this.propsParcelUnitNumber = selectedParcelsDetails.recipients_unit_number;
+          this.propsParcelItemDescription = selectedParcelsDetails.recipients_description_of_items;
+          this.propsParcelMobileNumber = selectedParcelsDetails.recipients_mobile_no;
+    },
+        showModal(id) {
+        this.isModalVisible = true;
+        this.selectedParcels(id)
+      },
+      closeModal() {
+        this.isModalVisible = false;
+      }
     },
     computed: {
         formattedDateTime() {
+            const min = String(this.currentTime.getMinutes()).padStart(2, "0");
             const hours = String(this.currentTime.getHours()).padStart(2, "0");
             const month = String(this.currentTime.getMonth() + 1).padStart(2, "0");
             const day = String(this.currentTime.getDate()).padStart(2, "0");
             const year = this.currentTime.getFullYear();
-            return `${month}${day}${year}${hours}`;
+            return `${month}${day}${year}${hours}${min}`;
         },
         datetimestamp() {
             const hours = String(this.currentTime.getHours()).padStart(2, "0");
@@ -102,7 +136,8 @@ export default {
         }
     },
     components: {
-      QrView
+      QrView,
+      Modal
     }
 }
 </script>
@@ -163,21 +198,79 @@ export default {
             <th>Unit Number</th>
             <th>Recipient Name</th>
             <th>Contact Number</th>
+            <th></th>
             </tr>
-            <tr  id="items" v-for="goal in goals">
-            <td>{{ goal.recipients_unit_number }}</td>
-            <td>{{ goal.recipients_name }}</td>
-            <td>{{ goal.recipients_mobile_no }}</td>
+            <tr id="items" v-for="goal in goals" :key="goal.parcel_id">
+            <td @click="showModal(goal.parcel_id)">{{ goal.recipients_unit_number }}</td>
+            <td @click="showModal(goal.parcel_id)">{{ goal.recipients_name }}</td>
+            <td @click="showModal(goal.parcel_id)">{{ goal.recipients_mobile_no }}</td>
+            <td @click="deleteParcels(goal.parcel_id)"><img  src="../assets/delete.png"/></td>
+
+            <Modal
+              v-show="isModalVisible"
+              @close="closeModal"
+              :parcelId="propsParcelId"
+              :ownerName="propsParcelOwnerName"
+              :unitNum="propsParcelUnitNumber"
+              :descItem="propsParcelItemDescription"
+              :mobileNum="propsParcelMobileNumber"/>
             </tr>
           </table>
         </div>
 
         <div>
           <button class="btnDone" @click="submit">Done</button>
-          
         </div>
 
       </div>
     </form>
   </div>
 </template>
+
+<style scoped>
+#parcels {
+  font-family: "Poppins";
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#parcels tr:nth-child(even){background-color: #ffffff;}
+
+#parcels tr:hover {background-color: #ddd;}
+
+#parcels th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #7C4D38;
+  color: white;
+  width: 1rem;
+}
+
+img {
+  height: 30%;
+  max-width: 30%;
+  padding: 1rem;
+}
+@media (min-width: 1024px) {
+  img {
+  height: 30%;
+  max-width: 30%;
+  padding: 1rem;
+}
+}
+
+@media (min-width: 500px) {
+  img {
+  height: 100%;
+  max-width: 100%;
+}
+}
+</style>

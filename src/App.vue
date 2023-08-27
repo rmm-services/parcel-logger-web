@@ -1,8 +1,13 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import HomeView from './views/HomeView.vue';
+import HomeView from './views/HomeView.vue'
 
-components: { HomeView }
+export default {
+    name: 'App',
+    components: {
+      HomeView
+    }
+  };
 
 </script>
 
