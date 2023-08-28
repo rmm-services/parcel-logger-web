@@ -4,7 +4,7 @@ export default{
 </script>
 
 <template>
-  <div id="app">
+  <div id="form-app">
     <form>
       <img src="../assets/submitted.png"/>
       <h2>Please present this QR code to the concierge.</h2>
@@ -34,5 +34,11 @@ h2{
   color: black;
   font-weight: bold;
   font-family: "Poppins";
+}
+@media (max-width: 500px) {
+  img {
+  height: 20%;
+  max-width: 20%;
+}
 }
 </style>

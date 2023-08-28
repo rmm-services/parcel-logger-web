@@ -30,7 +30,11 @@ export default {
     },
     methods: {
         addGoal() {
-            const newitem = {
+            if (this.enteredFirstName.length === 0 || this.enteredLastName.length === 0 || this.enteredCourier.length === 0 ||
+            this.enteredRecipientName.length === 0 || this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0 || this.enteredContactNum.length === 0){
+              
+            }else{
+              const newitem = {
                 parcel_id: this.enteredUnitNumber + this.formattedDateTime,
                 riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
                 riders_courier_type: this.enteredCourier,
@@ -56,10 +60,32 @@ export default {
             else {
                 this.isHidden = true;
             }
+            }
         },
         clearFields() {
-            this.goals = "";
+          this.$swal({
+            text: "Are you sure you want to delete all parcels?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.goals = "";
             this.isHidden = false;
+
+              this.$swal(
+                'Deleted!',
+                'Parcels has been deleted.',
+                'success'
+    )
+  } else if (
+    result.dismiss === this.$swal.DismissReason.cancel
+  ) {
+    
+  }
+})
         },
         validateInput() {
             if (this.firstName === '') {
@@ -70,6 +96,12 @@ export default {
             }
         },
         submit() {
+          if (this.goals.length === 0){
+            this.$swal({
+                        icon: 'error',
+                        text: "You don't have registered parcel"
+            });
+          }else{
             const apiData = {
                 rider_details: this.goals
             };
@@ -84,13 +116,24 @@ export default {
                 });
                 this.qr_id = qrvalue;
                 this.$router.push(`/qr/${this.qr_id[0]}`);
+                this.clearFields
             })
                 .catch(error => {
                 console.error('Error:', error);
             });
+          }
         },
         deleteParcels(id) {
-          const updateParcelList = this.goals.filter((el) => el.parcel_id !== id);
+          this.$swal({
+            text: "Are you sure you want to delete the parcel?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const updateParcelList = this.goals.filter((el) => el.parcel_id !== id);
           this.goals = updateParcelList;
 
           if (this.goals.length === 0) {
@@ -99,19 +142,31 @@ export default {
             else {
                 this.isHidden = true;
             }
-    },
-    selectedParcels(id) {
+
+              this.$swal(
+                'Deleted!',
+                'Parcel has been deleted.',
+                'success'
+    )
+  } else if (
+    result.dismiss === this.$swal.DismissReason.cancel
+  ) {
+    
+  }
+})
+        },
+        selectedParcels(id) {
           const selectedParcelsDetails = this.goals.find((el) => el.parcel_id === id);
           this.propsParcelId = selectedParcelsDetails.parcel_id;
           this.propsParcelOwnerName = selectedParcelsDetails.recipients_name;
           this.propsParcelUnitNumber = selectedParcelsDetails.recipients_unit_number;
           this.propsParcelItemDescription = selectedParcelsDetails.recipients_description_of_items;
           this.propsParcelMobileNumber = selectedParcelsDetails.recipients_mobile_no;
-    },
+        },
         showModal(id) {
         this.isModalVisible = true;
         this.selectedParcels(id)
-      },
+        },
       closeModal() {
         this.isModalVisible = false;
       }
@@ -143,7 +198,7 @@ export default {
 </script>
 
 <template>
-  <div id="app">
+  <div id="form-app">
     <form>
       <h2>SENDER</h2>
       <hr>
@@ -189,6 +244,13 @@ export default {
 
         <div>
           <button class="buttonAdd" @click="addGoal">Add Parcel</button>
+        </div>
+
+      </div>
+    </form>
+    <div>
+
+      <div>
           <button class="buttonClear" @click="clearFields">Clear All</button>
         </div>
 
@@ -217,13 +279,8 @@ export default {
             </tr>
           </table>
         </div>
-
-        <div>
           <button class="btnDone" @click="submit">Done</button>
         </div>
-
-      </div>
-    </form>
   </div>
 </template>
 
@@ -255,22 +312,75 @@ export default {
 }
 
 img {
-  height: 30%;
-  max-width: 30%;
+  height: 80%;
+  max-width: 80%;
   padding: 1rem;
 }
-@media (min-width: 1024px) {
-  img {
-  height: 30%;
-  max-width: 30%;
+
+@media (max-width: 600px) {
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: small;
+}
+
+img {
+  height: 90%;
+  max-width: 90%;
   padding: 1rem;
 }
 }
 
-@media (min-width: 500px) {
-  img {
-  height: 100%;
-  max-width: 100%;
+@media
+ (max-width: 500px) {
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: small;
+}
+
+img {
+  height: 120%;
+  max-width: 120%;
+}
+}
+
+@media (max-width: 450px) {
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: small;
+}
+
+img {
+  height: 130%;
+  max-width: 130%;
+}
+}
+
+@media (max-width: 400px) {
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: x-small;
+}
+
+img {
+  height: 150%;
+  max-width: 150%;
+}
+}
+
+@media (max-width: 350px) {
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: xx-small;
+}
+
+img {
+  height: 150%;
+  max-width: 150%;
 }
 }
 </style>
