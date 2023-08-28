@@ -13,7 +13,7 @@ export default{
   </div>
 </template>
 
-<style>
+<style scoped>
 .qr{
   display: block;
   margin-left: auto;
@@ -33,6 +33,6 @@ img {
 h2{
   color: black;
   font-weight: bold;
-  font-family: "Lucida Console", "Courier New", monospace;
+  font-family: "Poppins";
 }
 </style>
