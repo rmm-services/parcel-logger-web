@@ -2,6 +2,7 @@
 import axios from 'axios';
 import QrView from '../views/QrView.vue'
 import Modal from '../components/ModalView.vue'
+import Swal from 'sweetalert2'
 
 export default {
     data() {
@@ -107,19 +108,30 @@ export default {
             };
             axios.post('https://parcel-logger-api-dev-14e0728663d5.herokuapp.com/v1/api/add/bulk/parcel', apiData)
                 .then(response => {
-                const dataRes = [{
-                        data: response.data
+                    const dataRes = [{
+                        data: response.data,
+                        status: response.status
                     }];
                 this.dataResponse = response.data;
+                if (this.dataResponse.status === 'SUCCESS'){
                 const qrvalue = this.dataResponse.data.map((data) => {
                     return data.rider_qr_details;
                 });
                 this.qr_id = qrvalue;
                 this.$router.push(`/qr/${this.qr_id[0]}`);
                 this.clearFields
+                  }else{
+                    this.$swal({
+                        icon: 'error',
+                        text: "Something went wrong, Please try again!"
+                    });
+                  }
             })
                 .catch(error => {
-                console.error('Error:', error);
+                  this.$swal({
+                        icon: 'error',
+                        text: "Something went wrong, Please try again!"
+                    });
             });
           }
         },
@@ -192,7 +204,8 @@ export default {
     },
     components: {
       QrView,
-      Modal
+      Modal,
+      Swal
     }
 }
 </script>
