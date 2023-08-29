@@ -41,6 +41,14 @@ hr{
   margin: 1rem 0 0 0;
 }
 
+.input-field.invalid input {
+  border-color: red;
+}
+
+.input-field.invalid label {
+  color: red;
+}
+
 .input-field{
   position: relative;
   margin-top: 1rem;

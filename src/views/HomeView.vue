@@ -16,6 +16,9 @@ export default {
             enteredDescItem: '',
             enteredContactNum: '',
             firstNameValidity: 'pending',
+            lastNameValidity: 'pending',
+            recipientNameValidity: 'pending',
+            contactNumberValidity: 'pending',
             isHidden: false,
             currentTime: new Date(),
             dataResponse: [],
@@ -26,7 +29,9 @@ export default {
             propsParcelOwnerName: '',
             propsParcelUnitNumber: '',
             propsParcelItemDescription: '',
-            propsParcelMobileNumber: ''
+            propsParcelMobileNumber: '',
+            fullPage: true,
+            isLoading: true
         };
     },
     methods: {
@@ -88,21 +93,52 @@ export default {
   }
 })
         },
-        validateInput() {
-            if (this.firstName === '') {
+        validateInputFN() {
+            if (this.enteredFirstName === '' || this.enteredFirstName.length < 3) {
                 this.firstNameValidity = 'invalid';
             }
             else {
                 this.firstNameValidity = 'valid';
             }
         },
+        validateInputLN(){
+          if (this.enteredLastName === '' || this.enteredLastName.length < 2) {
+                this.lastNameValidity = 'invalid';
+            }
+            else {
+                this.lastNameValidity = 'valid';
+            }
+        },
+        validateInputRN(){
+          if (this.enteredRecipientName === '' || this.enteredRecipientName.length < 3) {
+                this.recipientNameValidity = 'invalid';
+            }
+            else {
+                this.recipientNameValidity = 'valid';
+            }
+        },
+        validateInputCN(){
+          const validationRegex = /^\d{11}$/;
+          if (!this.enteredContactNum.match(validationRegex) || !this.enteredContactNum.startsWith('09', 0)) {
+                this.contactNumberValidity = 'invalid';
+            }
+            else {
+                this.contactNumberValidity = 'valid';
+            }
+        },
         submit() {
+          
           if (this.goals.length === 0){
             this.$swal({
                         icon: 'error',
                         text: "You don't have registered parcel"
-            });
+            }) 
           }else{
+            let loader = this.$loading.show({
+                    // Optional parameters
+                    container: this.fullPage ? null : this.$refs.formContainer,
+                    loader: 'dots'
+                });
             const apiData = {
                 rider_details: this.goals
             };
@@ -118,9 +154,11 @@ export default {
                     return data.rider_qr_details;
                 });
                 this.qr_id = qrvalue;
+                loader.hide()
                 this.$router.push(`/qr/${this.qr_id[0]}`);
                 this.clearFields
                   }else{
+                    loader.hide()
                     this.$swal({
                         icon: 'error',
                         text: "Something went wrong, Please try again!"
@@ -215,16 +253,18 @@ export default {
     <form>
       <h2>SENDER</h2>
       <hr>
-      <div class="form-control" :class="{invalid: firstNameValidity === 'invalid'}">
+      <div class="form-control">
 
-        <div class="input-field">  
-          <input name="rider-first-name" id="rider-first-name" type="text" required v-model.trim="enteredFirstName" @blur="validateInput" />
+        <div class="input-field" :class="{invalid: firstNameValidity === 'invalid'}">  
+          <input name="rider-first-name" id="rider-first-name" type="text" required v-model.trim="enteredFirstName" @blur="validateInputFN" />
           <label for="rider-first-name">Rider's First Name</label>
+          <p v-if="firstNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
-        <div class="input-field">  
-          <input name="rider-last-name" id="rider-last-name" type="text" required v-model.trim="enteredLastName" @blur="validateInput" />
+        <div class="input-field" :class="{invalid: lastNameValidity === 'invalid'}">  
+          <input name="rider-last-name" id="rider-last-name" type="text" required v-model.trim="enteredLastName" @blur="validateInputLN" />
           <label for="rider-last-name">Rider's Last Name</label>
+          <p v-if="lastNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
         <div class="input-field">  
@@ -235,9 +275,10 @@ export default {
       <h2>RECIPIENT</h2>
       <hr>
 
-        <div class="input-field">  
-          <input name="recipient-name" id="recipient-name" type="text" required v-model.trim="enteredRecipientName" @blur="validateInput" />
+        <div class="input-field" :class="{invalid: recipientNameValidity === 'invalid'}">  
+          <input name="recipient-name" id="recipient-name" type="text" required v-model.trim="enteredRecipientName" @blur="validateInputRN" />
           <label for="recipient-name">Name</label>
+          <p v-if="recipientNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
         <div class="input-field">  
@@ -250,9 +291,10 @@ export default {
           <label for="description-item">Description Of Items</label>
         </div>
 
-        <div class="input-field">  
-          <input name="contact-number" id="contact-number" type="text" required v-model.trim="enteredContactNum" @blur="validateInput" />
+        <div class="input-field" :class="{invalid: contactNumberValidity === 'invalid'}">  
+          <input name="contact-number" id="contact-number" type="text" required v-model.trim="enteredContactNum" @blur="validateInputCN" />
           <label for="contact-number">Contact Number</label>
+          <p v-if="contactNumberValidity === 'invalid'">Please enter a valid number!</p>
         </div>
 
         <div>
@@ -328,6 +370,11 @@ img {
   height: 80%;
   max-width: 80%;
   padding: 1rem;
+}
+
+p{
+  font-family: "Poppins";
+  color: red;
 }
 
 @media (max-width: 600px) {
