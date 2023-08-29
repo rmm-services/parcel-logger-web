@@ -14,7 +14,7 @@ const app = createApp(App)
 
 app.component(VueQrcode.name, VueQrcode);
 
-app.use(VueSweetalert2);
+app.use(VueSweetalert2)
 app.use(Notifications);
 app.use(LoadingPlugin);
 app.use(router);
