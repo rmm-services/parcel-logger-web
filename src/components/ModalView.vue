@@ -155,6 +155,7 @@ export default {
   .modal-body td{
     width: 12rem;
     font-family: "Poppins";
+    color: black;
   }
 
   .detailValue{
