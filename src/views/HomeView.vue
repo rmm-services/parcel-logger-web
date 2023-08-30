@@ -351,6 +351,7 @@ export default {
   border-bottom: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+  color: black;
 }
 
 #parcels tr:nth-child(even){background-color: #ffffff;}
@@ -428,6 +429,20 @@ img {
 img {
   height: 150%;
   max-width: 150%;
+}
+}
+
+@media (max-width: 450px) {
+#parcels td, #parcels th {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: small;
+}
+
+img {
+  height: 150%;
+  max-width: 150%;
+  padding: 1rem;
 }
 }
 
