@@ -15,12 +15,14 @@ export default {
             enteredUnitNumber: '',
             enteredDescItem: '',
             enteredContactNum: '',
+            ridersFirstname: '',
             firstNameValidity: 'pending',
             lastNameValidity: 'pending',
             recipientNameValidity: 'pending',
             contactNumberValidity: 'pending',
             isHidden: false,
             currentTime: new Date(),
+            epoch: '',
             dataResponse: [],
             qr_data: '',
             qr_id: '',
@@ -34,6 +36,11 @@ export default {
             isLoading: true
         };
     },
+    mounted() {
+      setInterval(() => {
+      this.formattedDateTime();
+    }, 1000);
+  },
     methods: {
         addGoal(e) {
             if (this.enteredFirstName.length === 0 || this.enteredLastName.length === 0 || this.enteredCourier.length === 0 ||
@@ -48,8 +55,16 @@ export default {
                         text: "Please correct all the invalid information"
                     });
               }else{
-                const newitem = {
-                parcel_id: this.enteredUnitNumber + this.formattedDateTime,
+                if (this.goals.length !== 0){
+                  if (this.enteredFirstName !== this.ridersFirstname){
+                    e.preventDefault()
+                    this.$swal({
+                        icon: 'error',
+                        text: "Rider's Name is not match to your previous parcel"
+                    });
+                }else{
+                  const newitem = {
+                parcel_id: this.enteredUnitNumber + this.epoch,
                 riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
                 riders_courier_type: this.enteredCourier,
                 recipients_description_of_items: this.enteredDescItem,
@@ -68,12 +83,45 @@ export default {
             this.enteredRecipientName = '';
             this.enteredContactNum = '';
             this.enteredDescItem = '';
+            this.ridersFirstname = this.enteredFirstName;
+            this.epoch = "";
             if (this.goals.length === 0) {
                 this.isHidden = false;
             }
             else {
                 this.isHidden = true;
             }
+                }
+              }else{
+                const newitem = {
+                parcel_id: this.enteredUnitNumber + this.epoch,
+                riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
+                riders_courier_type: this.enteredCourier,
+                recipients_description_of_items: this.enteredDescItem,
+                recipients_unit_number: this.enteredUnitNumber,
+                recipients_name: this.enteredRecipientName,
+                recipients_mobile_no: this.enteredContactNum,
+                parcel_owner_datetime_received: '',
+                concierge_employee_id: '',
+                concierge_name: '',
+                concierge_datetime_received: '',
+                parcel_status: 'PENDING',
+                datetimestamp: this.datetimestamp
+            };
+            this.goals.push(newitem);
+            this.enteredUnitNumber = '';
+            this.enteredRecipientName = '';
+            this.enteredContactNum = '';
+            this.enteredDescItem = '';
+            this.ridersFirstname = this.enteredFirstName;
+            this.epoch = "";
+            if (this.goals.length === 0) {
+                this.isHidden = false;
+            }
+            else {
+                this.isHidden = true;
+            }
+              }
               }
             }
         },
@@ -94,8 +142,8 @@ export default {
           }).then((result) => {
             if (result.isConfirmed) {
               const countParcel = this.goals.length
-              console.log(countParcel)
               this.goals.splice(0, countParcel)
+              this.ridersFirstname = ''
             this.isHidden = false;
 
               this.$swal(
@@ -237,17 +285,13 @@ export default {
         },
       closeModal() {
         this.isModalVisible = false;
+      },
+      formattedDateTime() {
+        const today = new Date();
+        this.epoch = String(today / 1000).substring(0, 10);
       }
     },
     computed: {
-        formattedDateTime() {
-            const min = String(this.currentTime.getMinutes()).padStart(2, "0");
-            const hours = String(this.currentTime.getHours()).padStart(2, "0");
-            const month = String(this.currentTime.getMonth() + 1).padStart(2, "0");
-            const day = String(this.currentTime.getDate()).padStart(2, "0");
-            const year = this.currentTime.getFullYear();
-            return `${month}${day}${year}${hours}${min}`;
-        },
         datetimestamp() {
             const hours = String(this.currentTime.getHours()).padStart(2, "0");
             const minutes = String(this.currentTime.getMinutes()).padStart(2, "0");
@@ -274,7 +318,7 @@ export default {
       <div class="form-control">
 
         <div class="input-field" :class="{invalid: firstNameValidity === 'invalid'}">  
-          <input name="rider-first-name" id="rider-first-name" type="text" required v-model.trim="enteredFirstName" @blur="validateInputFN" />
+          <input name="rider-first-name" id="rider-first-name" type="text" required v-model.trim="enteredFirstName" @blur="validateInputFN"/>
           <label for="rider-first-name">Rider's First Name</label>
           <p v-if="firstNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
@@ -367,9 +411,9 @@ export default {
 
 #parcels td, #parcels th {
   border-bottom: 1px solid #ddd;
-  padding: 10px;
   text-align: center;
   color: black;
+  height: 5px;
 }
 
 #parcels tr:nth-child(even){background-color: #ffffff;}
@@ -386,14 +430,24 @@ export default {
 }
 
 img {
-  height: 80%;
-  max-width: 80%;
-  padding: 1rem;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+  padding: 10px;
 }
 
 p{
   font-family: "Poppins";
   color: red;
+}
+
+@media (max-width: 1300px) {
+  img {
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+  padding: 10px;
+}
 }
 
 @media (max-width: 600px) {

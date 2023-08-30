@@ -45,7 +45,7 @@ hr{
   border-color: red;
 }
 
-.input-field.invalid label {
+.form-control.invalid label {
   color: red;
 }
 
