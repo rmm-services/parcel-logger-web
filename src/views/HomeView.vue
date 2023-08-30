@@ -35,12 +35,20 @@ export default {
         };
     },
     methods: {
-        addGoal() {
+        addGoal(e) {
             if (this.enteredFirstName.length === 0 || this.enteredLastName.length === 0 || this.enteredCourier.length === 0 ||
             this.enteredRecipientName.length === 0 || this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0 || this.enteredContactNum.length === 0){
               
+
             }else{
-              const newitem = {
+              if(this.firstNameValidity === 'invalid' || this.lastNameValidity === 'invalid' || this.recipientNameValidity === 'invalid' || this.contactNumberValidity === 'invalid'){
+                e.preventDefault();
+                this.$swal({
+                        icon: 'error',
+                        text: "Please correct all the invalid information"
+                    });
+              }else{
+                const newitem = {
                 parcel_id: this.enteredUnitNumber + this.formattedDateTime,
                 riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
                 riders_courier_type: this.enteredCourier,
@@ -66,10 +74,17 @@ export default {
             else {
                 this.isHidden = true;
             }
+              }
             }
         },
         clearFields() {
-          this.$swal({
+          if (this.goals.length === 0){
+            this.$swal({
+                        icon: 'error',
+                        text: "You don't have registered parcel"
+            }) 
+          }else{
+            this.$swal({
             text: "Are you sure you want to delete all parcels?",
             icon: 'warning',
             showCancelButton: true,
@@ -78,7 +93,9 @@ export default {
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              this.goals = "";
+              const countParcel = this.goals.length
+              console.log(countParcel)
+              this.goals.splice(0, countParcel)
             this.isHidden = false;
 
               this.$swal(
@@ -92,6 +109,7 @@ export default {
     
   }
 })
+          }
         },
         validateInputFN() {
             if (this.enteredFirstName === '' || this.enteredFirstName.length < 3) {
