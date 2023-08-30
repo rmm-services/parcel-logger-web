@@ -27,6 +27,7 @@ img {
   margin-right: auto;
   padding-top: 2rem;
   height: 10%;
+  width: 100%;
   max-width: 10%;
 }
 
@@ -35,6 +36,15 @@ h2{
   font-weight: bold;
   font-family: "Poppins";
 }
+
+@media (max-width: 1300px) {
+  img {
+  height: 10%;
+  width: 100%;
+  max-width: 10%;
+}
+}
+
 @media (max-width: 500px) {
   img {
   height: 20%;
