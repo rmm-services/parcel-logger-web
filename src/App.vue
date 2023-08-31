@@ -15,15 +15,13 @@ export default {
   <div id="app">
     <RouterView/>
   </div>
-  <p class="footer">1.0.0.1-patch090120230030</p>
+  <p class="footer">1.0.0.2-patch090120230120</p>
 </template>
 
 <style scoped>
 .footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
+   position: absolute;
+   right:0;
    color: black;
    text-align: right;
    font-family: "Poppins";
