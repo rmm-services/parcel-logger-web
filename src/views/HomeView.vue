@@ -445,15 +445,6 @@ p{
   color: red;
 }
 
-@media (max-width: 1300px) {
-  img {
-  height: auto;
-  max-width: 100%;
-  width: 100%;
-  padding: 10px;
-}
-}
-
 @media (max-width: 600px) {
 #parcels td, #parcels th {
   border-bottom: 1px solid #ddd;
@@ -518,6 +509,25 @@ img {
 img {
   height: auto;
   max-width: 150%;
+}
+}
+
+/* iphone */
+@media (max-width: 1400px) {
+  img {
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+  padding: 10px;
+}
+}
+
+@media (max-width: 1300px) {
+  img {
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+  padding: 10px;
 }
 }
 </style>
