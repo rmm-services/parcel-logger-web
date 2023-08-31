@@ -26,7 +26,7 @@ img {
   margin-left: auto;
   margin-right: auto;
   padding-top: 2rem;
-  height: 10%;
+  height: auto;
   width: 100%;
   max-width: 10%;
 }
@@ -39,7 +39,7 @@ h2{
 
 @media (max-width: 1300px) {
   img {
-  height: 10%;
+  height: auto;
   width: 100%;
   max-width: 10%;
 }
@@ -47,7 +47,7 @@ h2{
 
 @media (max-width: 500px) {
   img {
-  height: 20%;
+  height: auto;
   max-width: 20%;
 }
 }
