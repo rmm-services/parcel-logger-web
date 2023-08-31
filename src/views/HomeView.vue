@@ -16,6 +16,7 @@ export default {
             enteredDescItem: '',
             enteredContactNum: '',
             ridersFirstname: '',
+            ridersLastName: '',
             firstNameValidity: 'pending',
             lastNameValidity: 'pending',
             recipientNameValidity: 'pending',
@@ -56,7 +57,7 @@ export default {
                     });
               }else{
                 if (this.goals.length !== 0){
-                  if (this.enteredFirstName !== this.ridersFirstname){
+                  if (this.enteredFirstName !== this.ridersFirstname || this.enteredLastName !== this.ridersLastName){
                     e.preventDefault()
                     this.$swal({
                         icon: 'error',
@@ -84,6 +85,7 @@ export default {
             this.enteredContactNum = '';
             this.enteredDescItem = '';
             this.ridersFirstname = this.enteredFirstName;
+            this.ridersLastName = this.enteredLastName
             this.epoch = "";
             if (this.goals.length === 0) {
                 this.isHidden = false;
@@ -106,7 +108,7 @@ export default {
                 concierge_name: '',
                 concierge_datetime_received: '',
                 parcel_status: 'PENDING',
-                datetimestamp: this.datetimestamp
+                datetimestamp: ''
             };
             this.goals.push(newitem);
             this.enteredUnitNumber = '';
@@ -114,6 +116,7 @@ export default {
             this.enteredContactNum = '';
             this.enteredDescItem = '';
             this.ridersFirstname = this.enteredFirstName;
+            this.ridersLastName = this.enteredLastName
             this.epoch = "";
             if (this.goals.length === 0) {
                 this.isHidden = false;
@@ -144,6 +147,7 @@ export default {
               const countParcel = this.goals.length
               this.goals.splice(0, countParcel)
               this.ridersFirstname = ''
+              this.ridersLastName = ''
             this.isHidden = false;
 
               this.$swal(
@@ -458,7 +462,7 @@ p{
 }
 
 img {
-  height: 90%;
+  height: auto;
   max-width: 90%;
   padding: 1rem;
 }
@@ -473,8 +477,8 @@ img {
 }
 
 img {
-  height: 120%;
-  max-width: 120%;
+  height: auto;
+  max-width: 100%;
 }
 }
 
@@ -486,8 +490,8 @@ img {
 }
 
 img {
-  height: 130%;
-  max-width: 130%;
+  height: auto;
+  max-width: 200%;
 }
 }
 
@@ -499,22 +503,8 @@ img {
 }
 
 img {
-  height: 150%;
+  height: auto;
   max-width: 150%;
-}
-}
-
-@media (max-width: 450px) {
-#parcels td, #parcels th {
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-  font-size: small;
-}
-
-img {
-  height: 150%;
-  max-width: 150%;
-  padding: 1rem;
 }
 }
 
@@ -526,7 +516,7 @@ img {
 }
 
 img {
-  height: 150%;
+  height: auto;
   max-width: 150%;
 }
 }
