@@ -212,7 +212,7 @@ export default {
             const apiData = {
                 rider_details: this.goals
             };
-            axios.post('https://parcel-logger-api-dev-14e0728663d5.herokuapp.com/v1/api/add/bulk/parcel', apiData)
+            axios.post('https://parcel-logger-api-5d122d124b61.herokuapp.com/v1/api/add/bulk/parcel', apiData)
                 .then(response => {
                     const dataRes = [{
                         data: response.data,
