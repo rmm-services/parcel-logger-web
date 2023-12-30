@@ -212,7 +212,7 @@ export default {
             const apiData = {
                 rider_details: this.goals
             };
-            axios.post('https://parcel-logger-api-dev-14e0728663d5.herokuapp.com/v1/api/add/bulk/parcel', apiData)
+            axios.post('https://parcel-logger-api-5d122d124b61.herokuapp.com/v1/api/add/bulk/parcel', apiData)
                 .then(response => {
                     const dataRes = [{
                         data: response.data,
@@ -236,6 +236,7 @@ export default {
                   }
             })
                 .catch(error => {
+                  loader.hide()
                   this.$swal({
                         icon: 'error',
                         text: "Something went wrong, Please try again!"
@@ -516,8 +517,8 @@ img {
 @media (max-width: 1400px) {
   img {
   height: auto;
-  max-width: 100%;
-  width: 100%;
+  max-width: 80%;
+  width: 80%;
   padding: 10px;
 }
 }
