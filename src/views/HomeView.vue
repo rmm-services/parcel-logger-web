@@ -510,7 +510,7 @@ export default {
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_unit_number }}</td>
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_name }}</td>
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_mobile_no }}</td>
-            <td @click="deleteParcels(goal.parcel_id)"><img  src="../assets/delete.png"/></td>
+            <td @click="deleteParcels(goal.parcel_id)"><img  id="delete" src="../assets/delete.png"/></td>
             <td @click="editParcels(index, goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)"><img  src="../assets/edit.png"/></td>
             </tr>
           </table>
@@ -553,6 +553,12 @@ img {
   max-width: 100%;
   width: 100%;
   padding: 10px;
+}
+
+#delete{
+  height: auto;
+  max-width: 150%;
+  width: 120%;
 }
 
 p{
