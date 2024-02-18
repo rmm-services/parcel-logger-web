@@ -240,37 +240,41 @@ export default {
         editParcels(index, id, ownerName, unitNum, descItem, mobileNum) {
           this.$swal({
             html: `<section>
-          <table style="padding: 10px; margin-Top:-50px">
-            <tr>
-            <td style="text-align: right; color: black">Parcel Id: </td> 
-            <td style="text-align: left; color: black; padding-left: 10px"> 
-              <input disabled value="` + id + `" style="width: max-width; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000"/> </td>
-          </tr>
-          <tr>
-            <td style="text-align: right; color: black">Owners Name: </td> 
-            <td style="text-align: left; color: black; padding-left: 10px"> 
-              <input id="edit-owner-name" value="` + ownerName +`" style="height: 45px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
-          </tr>
-          <br>
-          <tr>
-            <td style="text-align: right; color: black">Unit Number: </td> 
-            <td style="text-align: left; color: black; padding-left: 10px"> 
-              <input id="edit-unit-number" value="` + unitNum +`" style="height: 45px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
-          </tr>
-          <br>
-          <tr>
-            <td style="text-align: right; color: black">Description of Items: </td> 
-            <td style="text-align: left; color: black; padding-left: 10px"> 
-              <input id="edit-description-item" value="` + descItem +`" style="height: 45px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
-          </tr>
-          <br>
-          <tr>
-            <td style="text-align: right; color: black">Mobile Number: </td>
-            <td style="text-align: left; color: black; padding-left: 10px">
-              <input id="edit-mobile-number" value="` + mobileNum +`" style="height: 35px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
-          </tr>
-        </table>
-         </section>`,          
+              <div style="text-align:left; width: max-width; padding-top: 50px">
+              <label style="text-align:left; color: black; font-size:15px">Parcel Id: </label>
+            </div>
+            <div style="width: 100%">
+              <input disabled value="` + id + `" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              </div>
+              
+              <div style="text-align:left; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:15px">Owners Name: </label>
+            </div>
+            <div style="width: 100%">
+              <input id="edit-owner-name" value="` + ownerName +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              </div>
+
+              <div style="text-align:left; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:15px">Unit Number: </label>
+            </div>
+            <div style="width: 100%">
+              <input id="edit-unit-number" value="` + unitNum +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              </div>
+
+              <div style="text-align:left; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:15px">Description of Items: </label>
+            </div>
+            <div style="width: 100%">
+              <input id="edit-description-item" value="` + descItem +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              </div>
+
+              <div style="text-align:left; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:15px">Mobile Number:  </label>
+            </div>
+            <div style="width: 100%">
+              <input id="edit-mobile-number" value="` + mobileNum +`" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              </div>
+              </section>`,          
             showCloseButton: true,
             showConfirmButton: true,
             showCancelButton: true,
@@ -369,26 +373,30 @@ export default {
         showParcels(id, ownerName, unitNum, descItem, mobileNum) {
           this.$swal({
             html: `<section>
-          <table style="padding: 10px; margin-Top:-50px">
-            <tr>
-            <td style="text-align: right; color: black">Parcel Id: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + id + `</td>
-          </tr>
-          <tr>
-            <td style="text-align: right; color: black">Owners Name: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + ownerName +` </td>
-          </tr>
-          <br>
-          <tr>
-            <td style="text-align: right; color: black">Unit Number: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + unitNum +` </td>
-          </tr>
-          <br>
-          <tr>
-            <td style="text-align: right; color: black">Description of Items: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + descItem +` </td>
-          </tr>
-          <br>
-          <tr>
-            <td style="text-align: right; color: black">Mobile Number: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + mobileNum +` </td>
-          </tr>
-        </table>
+              <div style="text-align:center; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:18px">Parcel Id:  </label>
+              <label style="text-align:left; color: black; font-size:18px">` + id + `</label>
+              </div>
+
+              <div style="text-align:center; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:18px">Owners Name:  </label>
+              <label style="text-align:left; color: black; font-size:18px">` + ownerName + `</label>
+              </div>
+
+              <div style="text-align:center; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:18px">Unit Number:  </label>
+              <label style="text-align:left; color: black; font-size:18px">` + unitNum + `</label>
+              </div>
+
+              <div style="text-align:center; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:18px">Description of Items:  </label>
+              <label style="text-align:left; color: black; font-size:18px">` + descItem + `</label>
+              </div>
+
+              <div style="text-align:center; width: max-width; padding-top: 10px">
+              <label style="text-align:left; color: black; font-size:18px">Mobile Number:  </label>
+              <label style="text-align:left; color: black; font-size:18px">` + mobileNum + `</label>
+              </div>
          </section>`,          
             showCloseButton: true,
             showConfirmButton: false,
@@ -578,6 +586,11 @@ img {
   max-width: 90%;
   padding: 1rem;
 }
+
+#delete{
+  height: auto;
+  max-width: 90%;
+}
 }
 
 @media
@@ -641,13 +654,27 @@ img {
   width: 100%;
   padding: 10px;
 }
+
+#delete {
+  height: auto;
+  max-width: 150%;
+  width: 120%;
+  padding: 10px;
+}
 }
 
 @media (max-width: 1300px) {
   img {
   height: auto;
   max-width: 100%;
-  width: 100%;
+  width: 50%;
+  padding: 10px;
+}
+
+#delete {
+  height: auto;
+  max-width: 100%;
+  width: 50%;
   padding: 10px;
 }
 }
