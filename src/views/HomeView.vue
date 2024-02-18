@@ -627,14 +627,14 @@ p{
 
 #edit{
   height: auto;
-  max-width: 200%;
-  width: 200%;
+  max-width: 130%;
+  width: 130%;
 }
 
 #delete{
   height: auto;
-  max-width: 220%;
-  width: 220%;
+  max-width: 150%;
+  width: 150%;
 }
 }
 
