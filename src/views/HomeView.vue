@@ -12,11 +12,13 @@ export default {
             enteredLastName: '',
             enteredCourier: '',
             enteredRecipientName: '',
+            editRecipientName: '',
             enteredUnitNumber: '',
             enteredDescItem: '',
             enteredContactNum: '',
             ridersFirstname: '',
             ridersLastName: '',
+            disabled: 0,
             firstNameValidity: 'pending',
             lastNameValidity: 'pending',
             recipientNameValidity: 'pending',
@@ -43,11 +45,9 @@ export default {
     }, 1000);
   },
     methods: {
-        addGoal(e) {
+        addParcel(e) {
             if (this.enteredFirstName.length === 0 || this.enteredLastName.length === 0 || this.enteredCourier.length === 0 ||
             this.enteredRecipientName.length === 0 || this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0 || this.enteredContactNum.length === 0){
-              
-
             }else{
               if(this.firstNameValidity === 'invalid' || this.lastNameValidity === 'invalid' || this.recipientNameValidity === 'invalid' || this.contactNumberValidity === 'invalid'){
                 e.preventDefault();
@@ -80,9 +80,6 @@ export default {
                 datetimestamp: this.datetimestamp
             };
             this.goals.push(newitem);
-            this.enteredUnitNumber = '';
-            this.enteredRecipientName = '';
-            this.enteredContactNum = '';
             this.enteredDescItem = '';
             this.ridersFirstname = this.enteredFirstName;
             this.ridersLastName = this.enteredLastName
@@ -111,9 +108,6 @@ export default {
                 datetimestamp: ''
             };
             this.goals.push(newitem);
-            this.enteredUnitNumber = '';
-            this.enteredRecipientName = '';
-            this.enteredContactNum = '';
             this.enteredDescItem = '';
             this.ridersFirstname = this.enteredFirstName;
             this.ridersLastName = this.enteredLastName
@@ -243,6 +237,103 @@ export default {
             });
           }
         },
+        editParcels(index, id, ownerName, unitNum, descItem, mobileNum) {
+          this.$swal({
+            html: `<section>
+          <table style="padding: 10px; margin-Top:-50px">
+            <tr>
+            <td style="text-align: right; color: black">Parcel Id: </td> 
+            <td style="text-align: left; color: black; padding-left: 10px"> 
+              <input disabled value="` + id + `" style="width: max-width; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000"/> </td>
+          </tr>
+          <tr>
+            <td style="text-align: right; color: black">Owners Name: </td> 
+            <td style="text-align: left; color: black; padding-left: 10px"> 
+              <input id="edit-owner-name" value="` + ownerName +`" style="height: 45px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
+          </tr>
+          <br>
+          <tr>
+            <td style="text-align: right; color: black">Unit Number: </td> 
+            <td style="text-align: left; color: black; padding-left: 10px"> 
+              <input id="edit-unit-number" value="` + unitNum +`" style="height: 45px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
+          </tr>
+          <br>
+          <tr>
+            <td style="text-align: right; color: black">Description of Items: </td> 
+            <td style="text-align: left; color: black; padding-left: 10px"> 
+              <input id="edit-description-item" value="` + descItem +`" style="height: 45px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
+          </tr>
+          <br>
+          <tr>
+            <td style="text-align: right; color: black">Mobile Number: </td>
+            <td style="text-align: left; color: black; padding-left: 10px">
+              <input id="edit-mobile-number" value="` + mobileNum +`" style="height: 35px;border-radius: 6px;font-family: Poppins;color: #000000"/></td>
+          </tr>
+        </table>
+         </section>`,          
+            showCloseButton: true,
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update'
+          }).then((result) => {
+            if (result.isConfirmed) {
+        
+          const selectedParcelsDetails = this.goals.find((el) => el.parcel_id === id);
+          const propsParcelId = selectedParcelsDetails.parcel_id
+
+          const inputOwnerName = document.getElementById("edit-owner-name");
+          const inputOwnerNameValue = inputOwnerName.value;
+
+          const inputUnitNumber = document.getElementById("edit-unit-number");
+          const inputUnitNumberValue = inputUnitNumber.value;
+
+          const inputDescriptionItem = document.getElementById("edit-description-item");
+          const inputDescriptionItemValue = inputDescriptionItem.value;
+
+          const inputMobileNumber = document.getElementById("edit-mobile-number");
+          const inputMobileNumberValue = inputMobileNumber.value;
+          
+          if (propsParcelId === id){
+            const newitem = {
+                parcel_id: id,
+                riders_name: selectedParcelsDetails.riders_name,
+                riders_courier_type: selectedParcelsDetails.riders_courier_type,
+                recipients_description_of_items: inputDescriptionItemValue,
+                recipients_unit_number: inputUnitNumberValue,
+                recipients_name: inputOwnerNameValue,
+                recipients_mobile_no: inputMobileNumberValue,
+                parcel_owner_datetime_received: '',
+                concierge_employee_id: '',
+                concierge_name: '',
+                concierge_datetime_received: '',
+                parcel_status: 'PENDING',
+                datetimestamp: selectedParcelsDetails.datetimestamp
+            };
+          
+            this.goals.splice(index, 1, newitem)
+          }
+
+          if (this.goals.length === 0) {
+                this.isHidden = false;
+            }
+            else {
+                this.isHidden = true;
+            }
+
+              this.$swal(
+                'Updated!',
+                'Parcel has been Updated.',
+                'success'
+    )
+  } else if (
+    result.dismiss === this.$swal.DismissReason.cancel
+  ) {
+    
+  }
+})
+        },
         deleteParcels(id) {
           this.$swal({
             text: "Are you sure you want to delete the parcel?",
@@ -274,6 +365,34 @@ export default {
     
   }
 })
+        },
+        showParcels(id, ownerName, unitNum, descItem, mobileNum) {
+          this.$swal({
+            html: `<section>
+          <table style="padding: 10px; margin-Top:-50px">
+            <tr>
+            <td style="text-align: right; color: black">Parcel Id: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + id + `</td>
+          </tr>
+          <tr>
+            <td style="text-align: right; color: black">Owners Name: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + ownerName +` </td>
+          </tr>
+          <br>
+          <tr>
+            <td style="text-align: right; color: black">Unit Number: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + unitNum +` </td>
+          </tr>
+          <br>
+          <tr>
+            <td style="text-align: right; color: black">Description of Items: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + descItem +` </td>
+          </tr>
+          <br>
+          <tr>
+            <td style="text-align: right; color: black">Mobile Number: </td> <td style="text-align: left; color: black; padding-left: 10px"> ` + mobileNum +` </td>
+          </tr>
+        </table>
+         </section>`,          
+            showCloseButton: true,
+            showConfirmButton: false,
+          })
         },
         selectedParcels(id) {
           const selectedParcelsDetails = this.goals.find((el) => el.parcel_id === id);
@@ -342,13 +461,15 @@ export default {
       <hr>
 
         <div class="input-field" :class="{invalid: recipientNameValidity === 'invalid'}">  
-          <input name="recipient-name" id="recipient-name" type="text" required v-model.trim="enteredRecipientName" @blur="validateInputRN" />
+          <input name="recipient-name" id="recipient-name" 
+          type="text" required v-model.trim="enteredRecipientName" @blur="validateInputRN" />
           <label for="recipient-name">Name</label>
           <p v-if="recipientNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
         <div class="input-field">  
-          <input name="unit-number" id="unit-number" type="text" required v-model.trim="enteredUnitNumber" @blur="validateInput" />
+          <input name="unit-number" id="unit-number" 
+          type="text" required v-model.trim="enteredUnitNumber" @blur="validateInput" />
           <label for="unit-number">Unit Number</label>
         </div>
 
@@ -358,13 +479,14 @@ export default {
         </div>
 
         <div class="input-field" :class="{invalid: contactNumberValidity === 'invalid'}">  
-          <input name="contact-number" id="contact-number" type="text" required v-model.trim="enteredContactNum" @blur="validateInputCN" />
+          <input name="contact-number" id="contact-number" 
+          type="text" required v-model.trim="enteredContactNum" @blur="validateInputCN" />
           <label for="contact-number">Contact Number</label>
           <p v-if="contactNumberValidity === 'invalid'">Please enter a valid number!</p>
         </div>
 
         <div>
-          <button class="buttonAdd" @click="addGoal">Add Parcel</button>
+          <button class="buttonAdd" @click="addParcel">Add Parcel</button>
         </div>
 
       </div>
@@ -382,21 +504,14 @@ export default {
             <th>Recipient Name</th>
             <th>Contact Number</th>
             <th></th>
+            <th></th>
             </tr>
-            <tr id="items" v-for="goal in goals" :key="goal.parcel_id">
-            <td @click="showModal(goal.parcel_id)">{{ goal.recipients_unit_number }}</td>
-            <td @click="showModal(goal.parcel_id)">{{ goal.recipients_name }}</td>
-            <td @click="showModal(goal.parcel_id)">{{ goal.recipients_mobile_no }}</td>
+            <tr id="items" v-for="(goal, index) in goals" :key="goal.parcel_id, index">
+            <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_unit_number }}</td>
+            <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_name }}</td>
+            <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_mobile_no }}</td>
             <td @click="deleteParcels(goal.parcel_id)"><img  src="../assets/delete.png"/></td>
-
-            <Modal
-              v-show="isModalVisible"
-              @close="closeModal"
-              :parcelId="propsParcelId"
-              :ownerName="propsParcelOwnerName"
-              :unitNum="propsParcelUnitNumber"
-              :descItem="propsParcelItemDescription"
-              :mobileNum="propsParcelMobileNumber"/>
+            <td @click="editParcels(index, goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)"><img  src="../assets/edit.png"/></td>
             </tr>
           </table>
         </div>
