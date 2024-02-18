@@ -230,6 +230,7 @@ export default {
                   }
             })
                 .catch(error => {
+                  loader.hide()
                   this.$swal({
                         icon: 'error',
                         text: "Something went wrong, Please try again!"
@@ -650,8 +651,8 @@ img {
 @media (max-width: 1400px) {
   img {
   height: auto;
-  max-width: 100%;
-  width: 100%;
+  max-width: 80%;
+  width: 80%;
   padding: 10px;
 }
 
