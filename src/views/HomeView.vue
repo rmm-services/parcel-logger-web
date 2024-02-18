@@ -245,35 +245,35 @@ export default {
               <label style="text-align:left; color: black; font-size:15px">Parcel Id: </label>
             </div>
             <div style="width: 100%">
-              <input disabled value="` + id + `" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              <input disabled value="` + id + `" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
               </div>
               
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Owners Name: </label>
             </div>
             <div style="width: 100%">
-              <input id="edit-owner-name" value="` + ownerName +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              <input id="edit-owner-name" value="` + ownerName +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
               </div>
 
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Unit Number: </label>
             </div>
             <div style="width: 100%">
-              <input id="edit-unit-number" value="` + unitNum +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              <input id="edit-unit-number" value="` + unitNum +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
               </div>
 
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Description of Items: </label>
             </div>
             <div style="width: 100%">
-              <input id="edit-description-item" value="` + descItem +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              <input id="edit-description-item" value="` + descItem +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
               </div>
 
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Mobile Number:  </label>
             </div>
             <div style="width: 100%">
-              <input id="edit-mobile-number" value="` + mobileNum +`" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000;"/>
+              <input id="edit-mobile-number" value="` + mobileNum +`" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
               </div>
               </section>`,          
             showCloseButton: true,
@@ -519,8 +519,8 @@ export default {
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_unit_number }}</td>
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_name }}</td>
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_mobile_no }}</td>
-            <td @click="deleteParcels(goal.parcel_id)"><img  id="delete" src="../assets/delete.png"/></td>
-            <td @click="editParcels(index, goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)"><img  src="../assets/edit.png"/></td>
+            <td @click="deleteParcels(goal.parcel_id)"><img id="delete" src="../assets/delete.png"/></td>
+            <td @click="editParcels(index, goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)"><img id="edit" src="../assets/edit.png"/></td>
             </tr>
           </table>
         </div>
@@ -557,7 +557,7 @@ export default {
   width: 1rem;
 }
 
-img {
+#edit{
   height: auto;
   max-width: 100%;
   width: 100%;
@@ -566,8 +566,9 @@ img {
 
 #delete{
   height: auto;
-  max-width: 150%;
+  max-width: 120%;
   width: 120%;
+  padding: 10px;
 }
 
 p{
@@ -582,16 +583,18 @@ p{
   font-size: small;
 }
 
-img {
+#edit{
   height: auto;
-  max-width: 90%;
-  padding: 1rem;
+  max-width: 100%;
+  width: 100%;
 }
 
 #delete{
   height: auto;
-  max-width: 90%;
+  max-width: 120%;
+  width: 120%;
 }
+
 }
 
 @media
@@ -602,9 +605,16 @@ img {
   font-size: small;
 }
 
-img {
+#edit{
   height: auto;
   max-width: 100%;
+  width: 100%;
+}
+
+#delete{
+  height: auto;
+  max-width: 120%;
+  width: 120%;
 }
 }
 
@@ -615,9 +625,16 @@ img {
   font-size: small;
 }
 
-img {
+#edit{
   height: auto;
   max-width: 200%;
+  width: 200%;
+}
+
+#delete{
+  height: auto;
+  max-width: 220%;
+  width: 220%;
 }
 }
 
@@ -628,9 +645,16 @@ img {
   font-size: x-small;
 }
 
-img {
+#edit{
   height: auto;
   max-width: 150%;
+  width: 150%;
+}
+
+#delete{
+  height: auto;
+  max-width: 170%;
+  width: 170%;
 }
 }
 
@@ -641,41 +665,49 @@ img {
   font-size: xx-small;
 }
 
-img {
+#edit{
   height: auto;
-  max-width: 150%;
+  max-width: 120%;
+  width: 120%;
+}
+
+#delete{
+  height: auto;
+  max-width: 140%;
+  width: 140%;
 }
 }
 
 /* iphone */
-@media (max-width: 1400px) {
-  img {
+@media (min-width: 1400px) {
+  #edit{
   height: auto;
-  max-width: 80%;
-  width: 80%;
+  max-width: 100%;
+  width: 100%;
   padding: 10px;
 }
 
-#delete {
+#delete{
   height: auto;
-  max-width: 150%;
+  max-width: 120%;
   width: 120%;
   padding: 10px;
 }
 }
 
-@media (max-width: 1300px) {
-  img {
+@media (min-width: 1300px) {
+
+#edit{
   height: auto;
   max-width: 100%;
-  width: 50%;
+  width: 100%;
   padding: 10px;
 }
 
-#delete {
+#delete{
   height: auto;
-  max-width: 100%;
-  width: 50%;
+  max-width: 120%;
+  width: 120%;
   padding: 10px;
 }
 }
