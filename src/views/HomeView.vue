@@ -22,6 +22,8 @@ export default {
             firstNameValidity: 'pending',
             lastNameValidity: 'pending',
             recipientNameValidity: 'pending',
+            unitNumberValidity: 'pending',
+            descItemValidity: 'pending',
             contactNumberValidity: 'pending',
             isHidden: false,
             currentTime: new Date(),
@@ -49,7 +51,7 @@ export default {
             if (this.enteredFirstName.length === 0 || this.enteredLastName.length === 0 || this.enteredCourier.length === 0 ||
             this.enteredRecipientName.length === 0 || this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0 || this.enteredContactNum.length === 0){
             }else{
-              if(this.firstNameValidity === 'invalid' || this.lastNameValidity === 'invalid' || this.recipientNameValidity === 'invalid' || this.contactNumberValidity === 'invalid'){
+              if(this.firstNameValidity === 'invalid' || this.lastNameValidity === 'invalid' || this.recipientNameValidity === 'invalid' || this.unitNumberValidity === 'invalid' || this.descItemValidity === 'invalid' || this.contactNumberValidity === 'invalid'){
                 e.preventDefault();
                 this.$swal({
                         icon: 'error',
@@ -166,7 +168,7 @@ export default {
             }
         },
         validateInputLN(){
-          if (this.enteredLastName === '' || this.enteredLastName.length < 2) {
+          if (this.enteredLastName === '' || this.enteredLastName.length < 3) {
                 this.lastNameValidity = 'invalid';
             }
             else {
@@ -179,6 +181,22 @@ export default {
             }
             else {
                 this.recipientNameValidity = 'valid';
+            }
+        },
+        validateInputUN(){
+          if (this.enteredUnitNumber === '' || this.enteredUnitNumber.length < 3) {
+                this.unitNumberValidity = 'invalid';
+            }
+            else {
+                this.unitNumberValidity = 'valid';
+            }
+        },
+        validateInputDI(){
+          if (this.enteredDescItem === '' || this.enteredDescItem.length < 3) {
+                this.descItemValidity = 'invalid';
+            }
+            else {
+                this.descItemValidity = 'valid';
             }
         },
         validateInputCN(){
@@ -239,6 +257,7 @@ export default {
           }
         },
         editParcels(index, id, ownerName, unitNum, descItem, mobileNum) {
+          const inputValue = id;
           this.$swal({
             html: `<section>
               <div style="text-align:left; width: max-width; padding-top: 50px">
@@ -251,37 +270,97 @@ export default {
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Owners Name: </label>
             </div>
-            <div style="width: 100%">
+            <div style="width: 100%; text-align:left;">
               <input id="edit-owner-name" value="` + ownerName +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
+              <p style="display: none; text-align:left; font-size:12px; width: max-width; color: red" id="error-owner-name">Owner's name is too short!</p>
               </div>
 
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Unit Number: </label>
             </div>
-            <div style="width: 100%">
+            <div style="width: 100%; text-align:left;">
               <input id="edit-unit-number" value="` + unitNum +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
+              <p style="display: none; text-align:left; font-size:12px; width: max-width; color: red" id="error-unit-number">Unit number is too short!</p>
               </div>
 
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Description of Items: </label>
             </div>
-            <div style="width: 100%">
+            <div style="width: 100%; text-align:left;">
               <input id="edit-description-item" value="` + descItem +`" style="width: 100%; height: 45px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
+              <p style="display: none; text-align:left; font-size:12px; width: max-width; color: red" id="error-desc-item">Description of item is too short!</p>
               </div>
 
               <div style="text-align:left; width: max-width; padding-top: 10px">
               <label style="text-align:left; color: black; font-size:15px">Mobile Number:  </label>
             </div>
-            <div style="width: 100%">
+            <div style="width: 100%; text-align:left;">
               <input id="edit-mobile-number" value="` + mobileNum +`" style="width: 100%; height: 35px;border-radius: 6px;font-family: Poppins;color: #000000; text-transform: uppercase;"/>
+              <p style="display: none; text-align:left; font-size:12px; width: max-width; color: red" id="error-mobile-num">Mobile number is too short!</p>
+              <p style="display: none; text-align:left; font-size:12px; width: max-width; color: red" id="error-mobile-num-valid">Please enter a valid mobile number!</p>
               </div>
               </section>`,          
             showCloseButton: true,
             showConfirmButton: true,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Update'
+            confirmButtonColor: '#7C4D38',
+            cancelButtonColor: '#7C4D38',
+            confirmButtonText: 'Update',
+            preConfirm: async (id) => {
+
+              const inputOwnerName = document.getElementById("edit-owner-name");
+              const inputOwnerNameValue = inputOwnerName.value;
+              const errorOwnerName = document.getElementById("error-owner-name");
+
+              const inputUnitNumber = document.getElementById("edit-unit-number");
+              const inputUnitNumberValue = inputUnitNumber.value;
+              const errorUnitNumber = document.getElementById("error-unit-number");
+
+              const inputDescriptionItem = document.getElementById("edit-description-item");
+              const inputDescriptionItemValue = inputDescriptionItem.value;
+              const errorDescItem = document.getElementById("error-desc-item");
+
+              const inputMobileNumber = document.getElementById("edit-mobile-number");
+              const inputMobileNumberValue = inputMobileNumber.value;
+              const validationRegex = /^\d{11}$/;
+              const errorMobileNum = document.getElementById("error-mobile-num");
+              const errorMobileNumValid = document.getElementById("error-mobile-num-valid");
+
+          if (inputOwnerNameValue === '' || inputOwnerNameValue.length < 3){
+            errorOwnerName.style.display = 'inline';
+          }else{
+            errorOwnerName.style.display = 'none';
+          }
+
+          if (inputUnitNumberValue === '' || inputUnitNumberValue.length < 3){
+            errorUnitNumber.style.display = 'inline';
+          }else{
+            errorUnitNumber.style.display = 'none';
+          }
+
+          if (inputDescriptionItemValue === '' || inputDescriptionItemValue.length < 3){
+            errorDescItem.style.display = 'inline';
+          }else{
+            errorDescItem.style.display = 'none';
+          }
+
+          if (inputMobileNumberValue === '' || inputMobileNumberValue.length < 11){
+            errorMobileNum.style.display = 'inline';
+            errorMobileNumValid.style.display = 'none'
+          }else if (!inputMobileNumberValue.match(validationRegex) || !inputMobileNumberValue.startsWith('09', 0)){
+            errorMobileNum.style.display = 'none';
+            errorMobileNumValid.style.display = 'inline'
+          }else{
+            errorMobileNum.style.display = 'none';
+            errorMobileNumValid.style.display = 'none';
+          }
+
+          if (errorOwnerName.style.display === 'none' && errorUnitNumber.style.display === 'none' && errorDescItem.style.display === 'none' && errorMobileNum.style.display === 'none' && errorMobileNumValid.style.display === 'none'){
+            return true
+          }else{
+            return false
+          }
+        }
           }).then((result) => {
             if (result.isConfirmed) {
         
@@ -476,15 +555,17 @@ export default {
           <p v-if="recipientNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
-        <div class="input-field">  
+        <div class="input-field" :class="{invalid: unitNumberValidity === 'invalid'}">  
           <input name="unit-number" id="unit-number" 
-          type="text" required v-model.trim="enteredUnitNumber" @blur="validateInput" />
+          type="text" required v-model.trim="enteredUnitNumber" @blur="validateInputUN" />
           <label for="unit-number">Unit Number</label>
+          <p v-if="unitNumberValidity === 'invalid'">Please enter a valid unit number!</p>
         </div>
 
-        <div class="input-field">  
-          <input name="description-item" id="description-item" type="text" required v-model.trim="enteredDescItem" @blur="validateInput" />
+        <div class="input-field" :class="{invalid: descItemValidity === 'invalid'}">  
+          <input name="description-item" id="description-item" type="text" required v-model.trim="enteredDescItem" @blur="validateInputDI" />
           <label for="description-item">Description Of Items</label>
+          <p v-if="descItemValidity === 'invalid'">Please enter a valid description item!</p>
         </div>
 
         <div class="input-field" :class="{invalid: contactNumberValidity === 'invalid'}">  
@@ -519,9 +600,9 @@ export default {
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_unit_number }}</td>
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_name }}</td>
             <td @click="showParcels(goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)">{{ goal.recipients_mobile_no }}</td>
-            <td @click="deleteParcels(goal.parcel_id)"><img id="delete" src="../assets/delete.png"/></td>
             <td @click="editParcels(index, goal.parcel_id, goal.recipients_name, goal.recipients_unit_number, goal.recipients_description_of_items, goal.recipients_mobile_no)"><img id="edit" src="../assets/edit.png"/></td>
-            </tr>
+            <td @click="deleteParcels(goal.parcel_id)"><img id="delete" src="../assets/delete.png"/></td>
+          </tr>
           </table>
         </div>
           <button class="btnDone" @click="submit">Done</button>
