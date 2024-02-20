@@ -25,6 +25,7 @@ export default {
             unitNumberValidity: 'pending',
             descItemValidity: 'pending',
             contactNumberValidity: 'pending',
+            checked: false,
             isHidden: false,
             currentTime: new Date(),
             epoch: '',
@@ -84,7 +85,14 @@ export default {
             this.goals.push(newitem);
             this.enteredDescItem = '';
             this.ridersFirstname = this.enteredFirstName;
-            this.ridersLastName = this.enteredLastName
+            this.ridersLastName = this.enteredLastName;
+
+            if (this.checked === false) {
+              this.enteredRecipientName = '';
+              this.enteredUnitNumber = '';
+              this.enteredDescItem = '';
+              this.enteredContactNum = '';
+            }
             this.epoch = "";
             if (this.goals.length === 0) {
                 this.isHidden = false;
@@ -159,6 +167,16 @@ export default {
 })
           }
         },
+        handleCheckboxChange() {
+      // This method will be called when the checkbox state changes
+      console.log("Checkbox state changed. Checked:", this.checked);
+      if (this.checked === false){
+        this.enteredRecipientName = '';
+        this.enteredUnitNumber = '';
+        this.enteredDescItem = '';
+        this.enteredContactNum = '';
+      }
+    },
         validateInputFN() {
             if (this.enteredFirstName === '' || this.enteredFirstName.length < 3) {
                 this.firstNameValidity = 'invalid';
@@ -547,6 +565,10 @@ export default {
 
       <h2>RECIPIENT</h2>
       <hr>
+      <label class="container">Do you have more parcel with the same owner ?
+        <input type="checkbox" v-model="checked" @change="handleCheckboxChange">
+        <span class="checkmark"></span>
+        </label>
 
         <div class="input-field" :class="{invalid: recipientNameValidity === 'invalid'}">  
           <input name="recipient-name" id="recipient-name" 
@@ -791,5 +813,67 @@ p{
   width: 120%;
   padding: 10px;
 }
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: #7C4D38;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 </style>
