@@ -15,7 +15,7 @@ export default {
   <div id="app">
     <RouterView/>
   </div>
-  <p class="footer">1.0.0.6-patch0219202242348</p>
+  <p class="footer">1.0.0.7-patch0221202240006</p>
 </template>
 
 <style scoped>
