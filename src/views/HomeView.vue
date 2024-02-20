@@ -578,8 +578,8 @@ export default {
         </div>
 
         <div class="input-field" :class="{invalid: unitNumberValidity === 'invalid'}">  
-          <input name="unit-number" id="unit-number" 
-          type="text" required v-model.trim="enteredUnitNumber" @blur="validateInputUN" />
+          <input name="unit-number" id="unit-number" type="number"
+          required v-model.trim="enteredUnitNumber" @blur="validateInputUN" />
           <label for="unit-number">Unit Number</label>
           <p v-if="unitNumberValidity === 'invalid'">Please enter a valid unit number!</p>
         </div>
@@ -876,5 +876,11 @@ p{
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
