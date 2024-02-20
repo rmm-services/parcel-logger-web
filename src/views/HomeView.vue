@@ -822,6 +822,7 @@ p{
   margin-top: 12px;
   cursor: pointer;
   font-size: 15px;
+  color: black;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
