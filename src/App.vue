@@ -1,11 +1,11 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import HomeView from './views/HomeView.vue'
+import DashboardView from './views/DashboardView.vue'
 
 export default {
     name: 'App',
     components: {
-      HomeView
+      DashboardView
     }
   };
 
