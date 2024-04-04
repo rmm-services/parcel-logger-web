@@ -38,7 +38,10 @@ export default {
             propsParcelItemDescription: '',
             propsParcelMobileNumber: '',
             fullPage: true,
-            isLoading: true
+            isLoading: true,
+            selectedReceiver: '',
+            selectedCourier: '',
+            showInput: false
         };
     },
     mounted() {
@@ -192,36 +195,45 @@ export default {
 <template>
   <div id="form-app">
     <form>
-      <h2>Recipient</h2>
+      <h2>Details</h2>
       <hr>
       <div class="form-control">
 
         <div class="input-field" :class="{invalid: riderNameValidity === 'invalid'}">  
           <input name="rider-name" id="rider-name" type="text" required v-model.trim="enteredRiderName" @blur="validateInputRDN"/>
-          <label for="rider-name">Rider's Name</label>
+          <label for="rider-name">Name</label>
           <p v-if="riderNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
-        <div class="input-field" :class="{invalid: riderContactNumberValidity === 'invalid'}">  
-          <input name="rider-contact-number" id="rider-contact-number" 
-          type="text" required v-model.trim="enteredRiderContactNum" @blur="validateInputRCN" />
-          <label for="rider-contact-number">Contact Number</label>
-          <p v-if="riderContactNumberValidity === 'invalid'">Please enter a valid number!</p>
+        <div class="input-field">  
+          <select v-model="selectedReceiver">
+            <option disabled value="">Select Receiver</option>
+            <option>Broker</option>
+            <option>Rider</option>
+            <option>Unit Owner</option>
+            <option>Others</option>
+          </select>
+        </div>
+
+        <div v-if="selectedReceiver === 'Others'" class="input-field">  
+          <input name="receiver" id="receiver" type="text" required v-model.trim="enteredReceiver"/>
+          <label for="receiver">Others</label>
         </div>
 
         <div class="input-field">  
-          <input name="rider-courier" id="rider-courier" type="text" required v-model.trim="enteredCourier" @blur="validateInput" />
-          <label for="rider-courier">Courier</label>
+          <select v-model="selectedCourier">
+            <option disabled value="">Select Courier</option>
+            <option>Grab</option>
+            <option>Move It</option>
+            <option>Lalamove</option>
+            <option>Joyride</option>
+            <option>Others</option>
+          </select>
         </div>
 
-      <h2>Sender</h2>
-      <hr>
-
-        <div class="input-field" :class="{invalid: senderNameValidity === 'invalid'}">  
-          <input name="sender-name" id="sender-name" 
-          type="text" required v-model.trim="enteredSenderName" @blur="validateInputSN" />
-          <label for="sender-name">Name</label>
-          <p v-if="senderNameValidity === 'invalid'">Please enter a valid name!</p>
+        <div class="input-field" v-if="selectedCourier === 'Others'">  
+          <input name="courier" id="courier" type="text" required v-model.trim="enteredCourier"/>
+          <label for="courier">Others</label>
         </div>
 
         <div class="input-field" :class="{invalid: unitNumberValidity === 'invalid'}">  
@@ -235,13 +247,6 @@ export default {
           <input name="description-item" id="description-item" type="text" required v-model.trim="enteredDescItem" @blur="validateInputDI" />
           <label for="description-item">Description Of Item</label>
           <p v-if="descItemValidity === 'invalid'">Please enter a valid description item!</p>
-        </div>
-
-        <div class="input-field" :class="{invalid: contactNumberValidity === 'invalid'}">  
-          <input name="contact-number" id="contact-number" 
-          type="text" required v-model.trim="enteredContactNum" @blur="validateInputCN" />
-          <label for="contact-number">Contact Number</label>
-          <p v-if="contactNumberValidity === 'invalid'">Please enter a valid number!</p>
         </div>
 
       </div>
