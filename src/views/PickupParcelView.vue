@@ -100,17 +100,17 @@ export default {
                 this.contactNumberValidity = 'valid';
             }
         },
-        submit() {
+        submit(e) {
 
-            if (this.enteredRiderName.length === 0 || this.enteredRiderContactNum.length === 0 || this.enteredCourier.length === 0 ||
-            this.enteredSenderName.length === 0 || this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0 || this.enteredContactNum.length === 0){
+            if (this.enteredRiderName.length === 0 || this.selectedReceiver === "SELECT RECEIVER" || this.selectedCourier === 'SELECT COURIER' ||
+            this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0){
                 e.preventDefault();
                 this.$swal({
                         icon: 'error',
                         text: "Please fill out all information"
                     });
             }else{
-              if(this.riderNameValidity === 'invalid' || this.riderContactNumberValidity === 'invalid' || this.senderNameValidity === 'invalid' || this.unitNumberValidity === 'invalid' || this.descItemValidity === 'invalid' || this.contactNumberValidity === 'invalid'){
+              if(this.riderNameValidity === 'invalid' || this.unitNumberValidity === 'invalid' || this.descItemValidity === 'invalid'){
                 e.preventDefault();
                 this.$swal({
                         icon: 'error',
@@ -122,34 +122,34 @@ export default {
                     container: this.fullPage ? null : this.$refs.formContainer,
                     loader: 'dots'
                 });
-            const apiData = {
-                pickup_id: this.enteredUnitNumber + this.epoch,
-                pickup_no: '',
-                riders_name: this.enteredRiderName.replace(/\s/g, "").toLocaleUpperCase(),
-                rider_mobile_no: this.enteredRiderContactNum,
-                description_of_item: this.enteredDescItem,
-                owner_unit_no: this.enteredUnitNumber,
-                owner_name: this.enteredSenderName.toLocaleUpperCase(),
-                concierge_emp_no: '',
-                concierge_name: '',
-                pickup_status: 'For Pickup',
-                datetimestamp: this.datetimestamp
+            const data = {
+                name: this.enteredRiderName.toLocaleUpperCase(),
+                receiver: this.selectedReceiver.toLocaleUpperCase(),
+                courier_type: this.selectedCourier.toLocaleUpperCase(),
+                unit_number: this.enteredUnitNumber,
+                description_of_items: this.enteredDescItem.toLocaleUpperCase(),
+                employee_no: '',
+                employee_name: '',
+                datetime_completed: '',
+                datetimestamp: ''
             };
-            axios.post('', apiData)
+            this.pickupParcel.push(data)
+            const apiData = {
+              pickup_details: this.pickupParcel
+            }
+            console.log(apiData)
+            axios.post('https://ccd1-64-224-104-253.ngrok-free.app/v1/api/pick-up/parcel/add', apiData)
                 .then(response => {
-                    const dataRes = [{
-                        data: response.data,
-                        status: response.status
-                    }];
                 this.dataResponse = response.data;
-                if (this.dataResponse.status === 'SUCCESS'){
-                const qrvalue = this.dataResponse.data.map((data) => {
-                    return data.rider_qr_details;
-                });
-                this.qr_id = qrvalue;
-                loader.hide()
-                this.$router.push(`/qr/${this.qr_id[0]}`);
-                this.clearFields
+                if (response.data.data.message === 'Success'){
+                  loader.hide()
+                    this.$swal({
+                        icon: 'success',
+                        html: `Your Pickup Id is: 
+                         <label style="color: black; font-size:20px"> ${response.data.data.successfully_saved} </label>
+                          <br><br>
+                          Please present this to concierge or take a screenshot before closing this message`
+                    });
                   }else{
                     loader.hide()
                     this.$swal({
@@ -159,6 +159,7 @@ export default {
                   }
             })
                 .catch(error => {
+                  console.log(error)
                   loader.hide()
                   this.$swal({
                         icon: 'error',
@@ -206,7 +207,7 @@ export default {
         </div>
 
         <div class="input-field">  
-          <select v-model="selectedReceiver">
+          <select v-model.trim="selectedReceiver">
             <option disabled value="">Select Receiver</option>
             <option>Broker</option>
             <option>Rider</option>
@@ -221,7 +222,7 @@ export default {
         </div>
 
         <div class="input-field">  
-          <select v-model="selectedCourier">
+          <select v-model.trim="selectedCourier">
             <option disabled value="">Select Courier</option>
             <option>Grab</option>
             <option>Move It</option>
