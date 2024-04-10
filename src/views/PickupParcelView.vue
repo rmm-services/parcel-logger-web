@@ -16,6 +16,7 @@ export default {
             enteredUnitNumber: '',
             enteredDescItem: '',
             enteredContactNum: '',
+            enteredReceiver: '',
             riderName: '',
             disabled: 0,
             riderNameValidity: 'pending',
@@ -41,7 +42,10 @@ export default {
             isLoading: true,
             selectedReceiver: '',
             selectedCourier: '',
-            showInput: false
+            showInputReceiver: false,
+            showInputCourier: false,
+            receiver: '',
+            courier: ''
         };
     },
     mounted() {
@@ -101,8 +105,7 @@ export default {
             }
         },
         submit(e) {
-
-            if (this.enteredRiderName.length === 0 || this.selectedReceiver === "SELECT RECEIVER" || this.selectedCourier === 'SELECT COURIER' ||
+            if (this.enteredRiderName.length === 0 || this.selectedReceiver.length === 0 || this.selectedCourier.length === 0 ||
             this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0){
                 e.preventDefault();
                 this.$swal({
@@ -122,10 +125,11 @@ export default {
                     container: this.fullPage ? null : this.$refs.formContainer,
                     loader: 'dots'
                 });
+
             const data = {
                 name: this.enteredRiderName.toLocaleUpperCase(),
-                receiver: this.selectedReceiver.toLocaleUpperCase(),
-                courier_type: this.selectedCourier.toLocaleUpperCase(),
+                receiver: this.receiverData,
+                courier_type: this.courierData,
                 unit_number: this.enteredUnitNumber,
                 description_of_items: this.enteredDescItem.toLocaleUpperCase(),
                 employee_no: '',
@@ -138,7 +142,7 @@ export default {
               pickup_details: this.pickupParcel
             }
             console.log(apiData)
-            axios.post('https://ccd1-64-224-104-253.ngrok-free.app/v1/api/pick-up/parcel/add', apiData)
+            axios.post('', apiData)
                 .then(response => {
                 this.dataResponse = response.data;
                 if (response.data.data.message === 'Success'){
@@ -149,12 +153,20 @@ export default {
                          <label style="color: black; font-size:20px"> ${response.data.data.successfully_saved} </label>
                           <br><br>
                           Please present this to concierge or take a screenshot before closing this message`
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                          this.pickupParcel.splice(0, 1)
+                        }
                     });
                   }else{
                     loader.hide()
                     this.$swal({
                         icon: 'error',
                         text: "Something went wrong, Please try again!"
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                          this.pickupParcel.splice(0, 1)
+                        }
                     });
                   }
             })
@@ -164,6 +176,10 @@ export default {
                   this.$swal({
                         icon: 'error',
                         text: "Something went wrong, Please try again!"
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                          this.pickupParcel.splice(0, 1)
+                        }
                     });
             });
             }
@@ -183,6 +199,42 @@ export default {
             const day = String(this.currentTime.getDate()).padStart(2, "0");
             const year = this.currentTime.getFullYear();
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        },
+        receiverData(){
+          if (this.selectedReceiver === 'Others') {
+              this.receiver = this.enteredReceiver.toLocaleUpperCase()
+          } else {
+              this.receiver = this.selectedReceiver.toLocaleUpperCase()
+          }
+          return this.receiver;
+        },
+        courierData(){
+          if (this.selectedCourier === 'Others') {
+              this.courier = this.enteredCourier.toLocaleUpperCase()
+          } else {
+              this.courier = this.selectedCourier.toLocaleUpperCase()
+          }
+          return this.courier;
+        },
+        validateInputShowReceiver(){
+          if (this.selectedReceiver === 'Others'){
+            this.showInputReceiver = true
+            this.enteredReceiver = ''
+          }else {
+            this.showInputReceiver = false
+            this.enteredReceiver = ''
+          }
+          return this.showInputReceiver;
+        },
+        validateInputShowCourier(){
+          if (this.selectedCourier === 'Others'){
+            this.showInputCourier = true
+            this.enteredCourier = ''
+          }else {
+            this.showInputCourier = false
+            this.enteredCourier = ''
+          }
+          return this.showInputCourier;
         }
     },
     components: {
@@ -216,7 +268,7 @@ export default {
           </select>
         </div>
 
-        <div v-if="selectedReceiver === 'Others'" class="input-field">  
+        <div v-if="validateInputShowReceiver" class="input-field">
           <input name="receiver" id="receiver" type="text" required v-model.trim="enteredReceiver"/>
           <label for="receiver">Others</label>
         </div>
@@ -232,7 +284,7 @@ export default {
           </select>
         </div>
 
-        <div class="input-field" v-if="selectedCourier === 'Others'">  
+        <div class="input-field" v-if="validateInputShowCourier">  
           <input name="courier" id="courier" type="text" required v-model.trim="enteredCourier"/>
           <label for="courier">Others</label>
         </div>
