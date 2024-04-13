@@ -142,7 +142,7 @@ export default {
               pickup_details: this.pickupParcel
             }
             console.log(apiData)
-            axios.post('', apiData)
+            axios.post('https://ccd1-64-224-104-253.ngrok-free.app/v1/api/pick-up/parcel/add', apiData)
                 .then(response => {
                 this.dataResponse = response.data;
                 if (response.data.data.message === 'Success'){
