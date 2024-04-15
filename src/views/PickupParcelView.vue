@@ -258,6 +258,13 @@ export default {
           <p v-if="riderNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
+        <div class="input-field" :class="{invalid: unitNumberValidity === 'invalid'}">  
+          <input name="unit-number" id="unit-number" type="number"
+          required v-model.trim="enteredUnitNumber" @blur="validateInputUN" />
+          <label for="unit-number">Unit Number</label>
+          <p v-if="unitNumberValidity === 'invalid'">Please enter a valid unit number!</p>
+        </div>
+
         <div class="input-field">  
           <select v-model.trim="selectedReceiver">
             <option disabled value="">Select Receiver</option>
@@ -287,13 +294,6 @@ export default {
         <div class="input-field" v-if="validateInputShowCourier">  
           <input name="courier" id="courier" type="text" required v-model.trim="enteredCourier"/>
           <label for="courier">Others</label>
-        </div>
-
-        <div class="input-field" :class="{invalid: unitNumberValidity === 'invalid'}">  
-          <input name="unit-number" id="unit-number" type="number"
-          required v-model.trim="enteredUnitNumber" @blur="validateInputUN" />
-          <label for="unit-number">Unit Number</label>
-          <p v-if="unitNumberValidity === 'invalid'">Please enter a valid unit number!</p>
         </div>
 
         <div class="input-field" :class="{invalid: descItemValidity === 'invalid'}">  
