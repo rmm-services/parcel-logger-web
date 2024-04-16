@@ -15,7 +15,8 @@ export default {
   <div id="app">
     <RouterView/>
   </div>
-  <p class="footer">1.0.0.9-patch0221202240118</p>
+  <!-- major.minor.patch-datetime -->
+  <p class="footer">2.0.1-patch0416202242338</p>
 </template>
 
 <style scoped>

@@ -128,7 +128,7 @@ export default {
 
             const data = {
                 name: this.enteredRiderName.toLocaleUpperCase(),
-                receiver: this.receiverData,
+                receiver_type: this.receiverData,
                 courier_type: this.courierData,
                 unit_number: this.enteredUnitNumber,
                 description_of_items: this.enteredDescItem.toLocaleUpperCase(),
@@ -156,6 +156,7 @@ export default {
                     }).then((result) => {
                         if(result.isConfirmed){
                           this.pickupParcel.splice(0, 1)
+                          this.$router.push('/')
                         }
                     });
                   }else{
@@ -184,11 +185,15 @@ export default {
             });
             }
         }
-    },
-      formattedDateTime() {
+        },
+        formattedDateTime() {
         const today = new Date();
         this.epoch = String(today / 1000).substring(0, 10);
-      }
+        },
+        closeBrowser(){
+          var myWindow = window.open("", "_self");
+                          myWindow.close();
+        }
     },
     computed: {
         datetimestamp() {
