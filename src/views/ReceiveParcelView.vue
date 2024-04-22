@@ -70,10 +70,10 @@ export default {
                   const newitem = {
                 parcel_id: this.enteredUnitNumber + this.epoch,
                 riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
-                riders_courier_type: this.enteredCourier,
-                recipients_description_of_items: this.enteredDescItem,
+                riders_courier_type: this.enteredCourier.toLocaleUpperCase(),
+                recipients_description_of_items: this.enteredDescItem.toLocaleUpperCase(),
                 recipients_unit_number: this.enteredUnitNumber,
-                recipients_name: this.enteredRecipientName,
+                recipients_name: this.enteredRecipientName.toLocaleUpperCase(),
                 recipients_mobile_no: this.enteredContactNum,
                 parcel_owner_datetime_received: '',
                 concierge_employee_id: '',
@@ -105,17 +105,17 @@ export default {
                 const newitem = {
                 parcel_id: this.enteredUnitNumber + this.epoch,
                 riders_name: this.enteredFirstName.replace(/\s/g, "").toLocaleUpperCase() + this.enteredLastName.replace(/\s/g, "").toLocaleUpperCase(),
-                riders_courier_type: this.enteredCourier,
-                recipients_description_of_items: this.enteredDescItem,
+                riders_courier_type: this.enteredCourier.toLocaleUpperCase(),
+                recipients_description_of_items: this.enteredDescItem.toLocaleUpperCase(),
                 recipients_unit_number: this.enteredUnitNumber,
-                recipients_name: this.enteredRecipientName,
+                recipients_name: this.enteredRecipientName.toLocaleUpperCase(),
                 recipients_mobile_no: this.enteredContactNum,
                 parcel_owner_datetime_received: '',
                 concierge_employee_id: '',
                 concierge_name: '',
                 concierge_datetime_received: '',
                 parcel_status: 'PENDING',
-                datetimestamp: ''
+                datetimestamp: this.datetimestamp
             };
             this.goals.push(newitem);
             this.enteredDescItem = '';
