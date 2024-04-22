@@ -28,8 +28,8 @@ img {
 }
 
 .btn-group .button {
-  background-color: white; 
-  color: black; 
+  background-color: #7C4D38; 
+  color: white; 
   border: 2px solid #7C4D38;
   border-radius: 5px;
   padding: 15px 32px;
