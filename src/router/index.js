@@ -1,14 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import ReceiveParcelView from '../views/ReceiveParcelView.vue'
+import PickupParcelView from '../views/PickupParcelView.vue'
 import QrView from '../views/QrView.vue'
+import DashboardView from '../views/DashboardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'dashboard',
+      component: DashboardView
+    },
+    {
+      path: '/receive_parcel',
+      name: 'receive',
+      component: ReceiveParcelView
+    },
+    {
+      path: '/pickup_parcel',
+      name: 'pickup',
+      component: PickupParcelView
     },
     {
       path: '/qr/:qr',
