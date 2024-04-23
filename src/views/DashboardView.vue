@@ -14,7 +14,7 @@ export default {
     <img src="../assets/kroma-logo.png" style="width:40%;">
 
         <div class="btn-group">
-          <button class="button button1" @click="goToReceive">Receive Parcel</button>
+          <button class="button button1" @click="goToReceive">Deliver Parcel</button>
           <button class="button button1" @click="goToPickup">Pickup Parcel</button>
         </div>
 </template>
