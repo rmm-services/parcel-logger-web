@@ -8,23 +8,19 @@ export default {
     data() {
         return {
             pickupParcel: [],
-            enteredRiderName: '',
-            enteredRiderContactNum: '',
-            enteredCourier: '',
+            enteredOtherSender: '',
             enteredSenderName: '',
-            editRecipientName: '',
             enteredUnitNumber: '',
             enteredDescItem: '',
-            enteredContactNum: '',
-            enteredReceiver: '',
-            riderName: '',
+            entereditemQuantity: '',
+            enteredOtherReceiver: '',
+            enteredReceiversName: '',
             disabled: 0,
-            riderNameValidity: 'pending',
-            riderContactNumberValidity: 'pending',
             senderNameValidity: 'pending',
             unitNumberValidity: 'pending',
             descItemValidity: 'pending',
-            contactNumberValidity: 'pending',
+            quantityValidity: 'pending',
+            receiversNameValidity: 'pending',
             checked: false,
             isHidden: false,
             currentTime: new Date(),
@@ -33,19 +29,14 @@ export default {
             qr_data: '',
             qr_id: '',
             isModalVisible: false,
-            propsParcelId: '',
-            propsParcelOwnerName: '',
-            propsParcelUnitNumber: '',
-            propsParcelItemDescription: '',
-            propsParcelMobileNumber: '',
             fullPage: true,
             isLoading: true,
+            selectedSenderType: '',
             selectedReceiver: '',
-            selectedCourier: '',
             showInputReceiver: false,
-            showInputCourier: false,
-            receiver: '',
-            courier: ''
+            showInputSender: false,
+            sender: '',
+            receiver: ''
         };
     },
     mounted() {
@@ -54,23 +45,6 @@ export default {
     }, 1000);
   },
     methods: {
-        validateInputRDN() {
-            if (this.enteredRiderName === '' || this.enteredRiderName.length < 3) {
-                this.riderNameValidity = 'invalid';
-            }
-            else {
-                this.riderNameValidity = 'valid';
-            }
-        },
-        validateInputRCN(){
-          const validationRegex = /^\d{11}$/;
-          if (!this.enteredRiderContactNum.match(validationRegex) || !this.enteredRiderContactNum.startsWith('09', 0)) {
-                this.riderContactNumberValidity = 'invalid';
-            }
-            else {
-                this.riderContactNumberValidity = 'valid';
-            }
-        },
         validateInputSN(){
           if (this.enteredSenderName === '' || this.enteredSenderName.length < 3) {
                 this.senderNameValidity = 'invalid';
@@ -95,25 +69,34 @@ export default {
                 this.descItemValidity = 'valid';
             }
         },
-        validateInputCN(){
-          const validationRegex = /^\d{11}$/;
-          if (!this.enteredContactNum.match(validationRegex) || !this.enteredContactNum.startsWith('09', 0)) {
-                this.contactNumberValidity = 'invalid';
+        validateInputIQ(){
+          if (this.entereditemQuantity === '') {
+                this.quantityValidity = 'invalid';
             }
             else {
-                this.contactNumberValidity = 'valid';
+                this.quantityValidity = 'valid';
+            }
+        },
+        validateInputRCN(){
+          if (this.enteredReceiversName === '' || this.enteredReceiversName.length < 3) {
+                this.receiversNameValidity = 'invalid';
+            }
+            else {
+                this.receiversNameValidity = 'valid';
             }
         },
         submit(e) {
-            if (this.enteredRiderName.length === 0 || this.selectedReceiver.length === 0 || this.selectedCourier.length === 0 ||
-            this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0){
+            if (this.enteredSenderName.length === 0 || this.enteredUnitNumber.length === 0 || this.enteredDescItem.length === 0 || 
+            this.entereditemQuantity.length === 0 || this.enteredReceiversName.length === 0
+             ){
                 e.preventDefault();
                 this.$swal({
                         icon: 'error',
                         text: "Please fill out all information"
                     });
             }else{
-              if(this.riderNameValidity === 'invalid' || this.unitNumberValidity === 'invalid' || this.descItemValidity === 'invalid'){
+              if(this.senderNameValidity === 'invalid' || this.unitNumberValidity === 'invalid' || this.descItemValidity === 'invalid' ||
+                this.quantityValidity === 'invalid' || this.receiversNameValidity === 'invalid'){
                 e.preventDefault();
                 this.$swal({
                         icon: 'error',
@@ -127,13 +110,21 @@ export default {
                 });
 
             const data = {
-                name: this.enteredRiderName.toLocaleUpperCase(),
+                pickup_id: '',
+                name_of_sender: this.enteredSenderName.toLocaleUpperCase(),
                 receiver_type: this.receiverData,
-                courier_type: this.courierData,
+                sender_type: this.senderData,
+                courier_type: '',
                 unit_number: this.enteredUnitNumber,
                 description_of_items: this.enteredDescItem.toLocaleUpperCase(),
+                quantity: this.entereditemQuantity,
+                receiver_name: this.enteredReceiversName.toLocaleUpperCase(),
                 employee_no: '',
                 employee_name: '',
+                received_by_employee_id: '',
+                received_by_employee_name: '',
+                signature: '',
+                status: '',
                 datetime_completed: '',
                 datetimestamp: ''
             };
@@ -142,7 +133,7 @@ export default {
               pickup_details: this.pickupParcel
             }
             console.log(apiData)
-            axios.post('https://parcel-logger-api-5d122d124b61.herokuapp.com/v1/api/pick-up/parcel/add', apiData)
+            axios.post('', apiData)
                 .then(response => {
                 this.dataResponse = response.data;
                 if (response.data.data.message === 'Success'){
@@ -206,40 +197,40 @@ export default {
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         },
         receiverData(){
-          if (this.selectedReceiver === 'Others') {
-              this.receiver = this.enteredReceiver.toLocaleUpperCase()
+          if (this.selectedReceiver === 'Other') {
+              this.receiver = this.enteredOtherReceiver.toLocaleUpperCase()
           } else {
               this.receiver = this.selectedReceiver.toLocaleUpperCase()
           }
           return this.receiver;
         },
-        courierData(){
-          if (this.selectedCourier === 'Others') {
-              this.courier = this.enteredCourier.toLocaleUpperCase()
+        senderData(){
+          if (this.selectedSenderType === 'Other') {
+              this.sender = this.enteredOtherSender.toLocaleUpperCase()
           } else {
-              this.courier = this.selectedCourier.toLocaleUpperCase()
+              this.sender = this.selectedSenderType.toLocaleUpperCase()
           }
-          return this.courier;
+          return this.sender;
         },
-        validateInputShowReceiver(){
-          if (this.selectedReceiver === 'Others'){
+        validateInputOtherReceiver(){
+          if (this.selectedReceiver === 'Other'){
             this.showInputReceiver = true
-            this.enteredReceiver = ''
+            this.enteredOtherReceiver = ''
           }else {
             this.showInputReceiver = false
-            this.enteredReceiver = ''
+            this.enteredOtherReceiver = ''
           }
           return this.showInputReceiver;
         },
-        validateInputShowCourier(){
-          if (this.selectedCourier === 'Others'){
-            this.showInputCourier = true
-            this.enteredCourier = ''
+        validateInputOtherSender(){
+          if (this.selectedSenderType === 'Other'){
+            this.showInputSender = true
+            this.enteredOtherSender = ''
           }else {
-            this.showInputCourier = false
-            this.enteredCourier = ''
+            this.showInputSender = false
+            this.enteredOtherSender = ''
           }
-          return this.showInputCourier;
+          return this.showInputSender;
         }
     },
     components: {
@@ -257,10 +248,28 @@ export default {
       <hr>
       <div class="form-control">
 
-        <div class="input-field" :class="{invalid: riderNameValidity === 'invalid'}">  
-          <input name="rider-name" id="rider-name" type="text" required v-model.trim="enteredRiderName" @blur="validateInputRDN"/>
-          <label for="rider-name">Name</label>
-          <p v-if="riderNameValidity === 'invalid'">Please enter a valid name!</p>
+        <div class="input-field">  
+          <select v-model.trim="selectedSenderType">
+            <option disabled value="">Select Sender Type</option>
+            <option>Resident</option>
+            <option>Courier</option>
+            <option>Broker</option>
+            <option>SPA</option>
+            <option>Relative</option>
+            <option>Helper</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div v-if="validateInputOtherSender" class="input-field">
+          <input name="other-sender" id="other-sender" type="text" required v-model.trim="enteredOtherSender"/>
+          <label for="other-sender">Other Sender Type</label>
+        </div>
+
+        <div class="input-field" :class="{invalid: senderNameValidity === 'invalid'}">  
+          <input name="sender-name" id="sender-name" type="text" required v-model.trim="enteredSenderName" @blur="validateInputSN"/>
+          <label for="sender-name">Name of Sender/Consignor:</label>
+          <p v-if="senderNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
         <div class="input-field" :class="{invalid: unitNumberValidity === 'invalid'}">  
@@ -270,41 +279,41 @@ export default {
           <p v-if="unitNumberValidity === 'invalid'">Please enter a valid unit number!</p>
         </div>
 
-        <div class="input-field">  
-          <select v-model.trim="selectedReceiver">
-            <option disabled value="">Select Receiver</option>
-            <option>Broker</option>
-            <option>Rider</option>
-            <option>Unit Owner</option>
-            <option>Others</option>
-          </select>
-        </div>
-
-        <div v-if="validateInputShowReceiver" class="input-field">
-          <input name="receiver" id="receiver" type="text" required v-model.trim="enteredReceiver"/>
-          <label for="receiver">Others</label>
-        </div>
-
-        <div class="input-field">  
-          <select v-model.trim="selectedCourier">
-            <option disabled value="">Select Courier</option>
-            <option>Grab</option>
-            <option>Move It</option>
-            <option>Lalamove</option>
-            <option>Joyride</option>
-            <option>Others</option>
-          </select>
-        </div>
-
-        <div class="input-field" v-if="validateInputShowCourier">  
-          <input name="courier" id="courier" type="text" required v-model.trim="enteredCourier"/>
-          <label for="courier">Others</label>
-        </div>
-
         <div class="input-field" :class="{invalid: descItemValidity === 'invalid'}">  
           <input name="description-item" id="description-item" type="text" required v-model.trim="enteredDescItem" @blur="validateInputDI" />
-          <label for="description-item">Description Of Item</label>
+          <label for="description-item">Description of Item/s:</label>
           <p v-if="descItemValidity === 'invalid'">Please enter a valid description item!</p>
+        </div>
+
+        <div class="input-field" :class="{invalid: quantityValidity === 'invalid'}">  
+          <input name="item-quantity" id="item-quantity" type="number"
+          required v-model.trim="entereditemQuantity" @blur="validateInputIQ" />
+          <label for="item-quantity">Quantity</label>
+          <p v-if="quantityValidity === 'invalid'">Please enter a valid quantity!</p>
+        </div>
+
+        <div class="input-field">  
+          <select v-model.trim="selectedReceiver">
+            <option disabled value="">Select Receiver Type:</option>
+            <option>Resident</option>
+            <option>Courier</option>
+            <option>Broker</option>
+            <option>SPA</option>
+            <option>Relative</option>
+            <option>Helper</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div v-if="validateInputOtherReceiver" class="input-field">
+          <input name="other-receiver" id="other-receiver" type="text" required v-model.trim="enteredOtherReceiver"/>
+          <label for="other-receiver">Other Receiver Type</label>
+        </div>
+
+        <div class="input-field" :class="{invalid: receiversNameValidity === 'invalid'}">  
+          <input name="receivers-name" id="receivers-name" type="text" required v-model.trim="enteredReceiversName" @blur="validateInputRCN"/>
+          <label for="receivers-name">Receivers Name</label>
+          <p v-if="receiversNameValidity === 'invalid'">Please enter a valid name!</p>
         </div>
 
       </div>
