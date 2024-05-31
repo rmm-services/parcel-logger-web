@@ -124,7 +124,7 @@ export default {
                 received_by_employee_id: '',
                 received_by_employee_name: '',
                 signature: '',
-                status: '',
+                status: 'PENDING',
                 datetime_completed: '',
                 datetimestamp: ''
             };
@@ -133,7 +133,7 @@ export default {
               pickup_details: this.pickupParcel
             }
             console.log(apiData)
-            axios.post('', apiData)
+            axios.post('http://192.168.100.14:80/v1/api/pick-up/parcel/add', apiData)
                 .then(response => {
                 this.dataResponse = response.data;
                 if (response.data.data.message === 'Success'){
