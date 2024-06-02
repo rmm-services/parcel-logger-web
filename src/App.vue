@@ -1,11 +1,11 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import HomeView from './views/HomeView.vue'
+import DashboardView from './views/DashboardView.vue'
 
 export default {
     name: 'App',
     components: {
-      HomeView
+      DashboardView
     }
   };
 
@@ -15,7 +15,8 @@ export default {
   <div id="app">
     <RouterView/>
   </div>
-  <p class="footer">1.0.0.2-patch090120230120</p>
+  <!-- major.minor.patch-datetime -->
+  <p class="footer">2.3.0-patch060220241955</p>
 </template>
 
 <style scoped>

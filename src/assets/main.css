@@ -52,6 +52,7 @@ hr{
 .input-field{
   position: relative;
   margin-top: 1rem;
+  text-transform: uppercase;
 }
 .input-field input{
    width: 100%;
@@ -64,6 +65,20 @@ hr{
   color: #000000;
   outline: none;
   font-family: "Poppins";
+  text-transform: uppercase;
+}
+.input-field select{
+  width: 100%;
+ height: 45px;
+ border-radius: 6px;
+ font-size: 16px;
+ padding: 0 15px;
+ border: 2px solid #E9E7E1;
+ background: transparent;
+ color: #000000;
+ outline: none;
+ font-family: "Poppins";
+ text-transform: uppercase;
 }
 .input-field label{
   position: absolute;

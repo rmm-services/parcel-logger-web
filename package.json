@@ -13,6 +13,7 @@
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "axios": "^1.4.0",
     "notiwind": "^2.0.2",
+    "primevue": "^3.51.0",
     "qrcode": "^1.5.3",
     "sweetalert2": "^11.7.27",
     "vue": "^3.3.4",
