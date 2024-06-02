@@ -133,7 +133,7 @@ export default {
               pickup_details: this.pickupParcel
             }
             console.log(apiData)
-            axios.post('http://192.168.100.14:80/v1/api/pick-up/parcel/add', apiData)
+            axios.post('https://parcel-logger-api-5d122d124b61.herokuapp.com/v1/api/pick-up/parcel/add', apiData)
                 .then(response => {
                 this.dataResponse = response.data;
                 if (response.data.data.message === 'Success'){
