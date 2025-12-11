@@ -132,7 +132,6 @@ export default {
             const apiData = {
               pickup_details: this.pickupParcel
             }
-            console.log(apiData)
             axios.post('https://kromatower.ph/be/v1/api/pick-up/parcel/add', apiData)
                 .then(response => {
                 this.dataResponse = response.data;
